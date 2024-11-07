@@ -1,0 +1,146 @@
+.header {
+  display: grid;
+  /* grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr; */
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  width: 90%;
+  margin-bottom: 10px;
+}
+
+.row {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  background-color:rgb(235, 245, 249);
+  width: 90%;
+  padding: 10px 0px 10px 0px;
+  margin-bottom: 15px;
+}
+
+.flex-row-button {
+
+}
+
+.seeMoreBtn {
+  margin-bottom: 5px;
+  background-color: rgb(63, 91, 247);
+  color: white;
+}
+
+.removeBtn {
+  margin-top: 5px;
+  border-color:rgb(63, 91, 247);
+  color: rgb(63, 91, 247);
+}
+
+.addBookModalForm {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-around; */
+  /* border-style: 2px;
+  border-color: black; */
+  border: 1px solid lightgrey;
+  width: 300px;
+  height: 400px;
+  padding: 20px;
+  box-shadow: 5px 8px 5px lightgrey;
+}
+
+.hidden {
+display: none;
+}
+
+#btnCloseModal {
+  margin-left: 95%;
+  font-size: 15px;
+  padding: 0;
+  border: 0;
+  background: none;
+  width: 10px;
+  
+}
+
+.innerModalSection {
+  background-color: rgb(235, 245, 249);
+  width: 280px;
+  height: 280px;
+  padding: 10px;
+}
+
+.book-form-title,
+.book-form-rating {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+/* title search */
+#title-input {
+  border-radius: 10px;
+  border-color: lightgray;
+  width: 70%;
+  height: 8%;
+  margin-top: 8px;
+  /* display: inline; */
+}
+
+/* .searchField {
+  display: inline;
+} */
+
+.modalSearchBtn {
+  width: 60px;
+  height: 20px;
+  margin-left: 10px;
+  background-color: rgb(63, 91, 247);
+  color: white;
+  border: none;
+  border-radius: 10%;
+  /* position: absolute; */
+  z-index: 0; 
+  /* display: inline;  */
+}
+
+.searchResults ul{
+  width: 84%;
+  height: auto;
+  background-color: white;
+  border: 2px lightgrey solid;
+  border-radius: 5px;
+  margin-top: 5px;
+  z-index: 1;
+  
+  
+}
+
+.searchResults ul li {
+  cursor: pointer;
+  list-style: none;
+}
+
+.searchResults ul li: hover {
+  background: blue;
+}
+
+
+
+/* rating entry */
+#rating-input {
+  border-radius: 5px;
+  border-color: lightgray;
+  width: 25%;
+  height: 10%;
+  margin-top: 8px;
+
+}
+
+.modalButton {
+  width: 60px;
+  height: 20px;
+  margin-top: 18px;
+  margin-left: 70%;
+  background-color: rgb(63, 91, 247);
+  color: white;
+  border: none;
+  border-radius: 10%;
+  /* position: absolute; */
+  z-index: 0;
+}

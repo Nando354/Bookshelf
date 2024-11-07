@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="resources/css/main.css">
+  <title>BOOKSHELF</title>
+</head>
+<body>
+  <header>
+    <div class="upperSearchHeadings">
+      <h1 class="myBookShelf">My Bookshelf</h1>
+      <p class="searchDropDown">Search By Category</p>
+      <button id="addBookButtonModal">Add Book</button>
+    </div>
+    <!-- <div class="titleHeadings">
+      <p>Title</p>
+      <p>Ratings</p>
+      <p>Category</p>
+      <p>Author</p>
+    </div> -->
+  </header>
+  <div class="bookshelfContainer">
+    <div class="flex-table header">
+      <div class="flex-row">Image</div>
+      <div class="flex-row">Title</div>
+      <div class="flex-row">Ratings</div>
+      <div class="flex-row">Category</div>
+      <div class="flex-row">Author</div>
+    </div>
+
+    <div class="flex-table row">
+      <div class="flex-row image">Image</div>
+      <div class="flex-row title">Title</div>
+      <div class="flex-row ratings">Ratings</div>
+      <div class="flex-row category">Category</div>
+      <div class="flex-row author">Author</div>
+      <div class="flex-row-buttons">
+        <div class="flex-row"><button class="seeMoreBtn">See more</button></div>
+        <div class="flex-row"><button class="removeBtn">Remove</button></div>
+      </div>
+    </div>
+
+  </div>
+  <form class="addBookModalForm hidden" id="modal" autocomplete="off">
+    <button id="btnCloseModal">x</button>
+    <h2>Add to your bookshelf</h2>
+    <div class="innerModalSection">
+      <label class="book-form-title" for="title-input">Title</label>
+      <input required type="text" class="form-control" id="title-input" onkeyup="processChange" placeholder="Search Title" />
+      <button class="modalSearchBtn">Search</button>
+      <div class="searchResults">
+        <ul class="searchList">
+          <li>Javascript</li>
+          <li>Web Development</li>
+          <li>Javascript</li>
+          <li>Web Development</li>
+          <li>Javascript</li>
+          <li>Web Development</li>
+          <li>Javascript</li>
+          <li>Web Development</li>
+          <li>Javascript</li>
+          <li>Web Development</li>
+          <li>Javascript</li>
+          <li>Web Development</li>
+        </ul>
+      </div>
+      <label class="book-form-rating" for="rating-input">Rating</label>
+      <input required type="text" class="form-control" id="rating-input" placeholder="0/5" />
+    </div>
+    <button class="modalButton">Add</button>
+  </form>
+</body>
+</html>
+<base href="/"> 
+<script src="resources/js/script.js"></script>
