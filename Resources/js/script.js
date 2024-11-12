@@ -1,17 +1,16 @@
-const testurl = 'https://openlibrary.org/search.json?q=the+lord+of+the+rings'
+// const testurl = 'https://openlibrary.org/search.json?q=the+lord+of+the+rings'
 const url = 'https://openlibrary.org/search.json?q='
-
-
-
 
 const titleInput = document.getElementById("title-input")
 const addBookButtonElement = document.getElementById("addBookButtonModal")
 const modalCloseBtn = document.getElementById("btnCloseModal")
 let modal = document.getElementById("modal")
 let query = titleInput.value.toLowerCase()
-console.log(query)
+const searchDiv = document.getElementById("searchResults")
+const searchHidden = document.querySelector(".searchHidden")
+console.log(searchDiv)
+console.log(searchHidden)
 let searchArray = []
-
 
 //Toggle Add Book Modal
 function toggleModal() {
@@ -25,52 +24,32 @@ modalCloseBtn.addEventListener("click", toggleModal);
 const addBookObj = {
   id: titleInput.value.toLowerCase()
 }
-console.log(addBookObj)
 
-
-
-// function inputSearch(){
-//   //call the bookSearch function with the typed in value
-//   console.log("input search called")
-//   bookSearch(titleInput.value)
-  
-// }
-
+//Debouncing so search waits to make the get call to the API and not on every keystroke
 function debounce(func, timeout = 600){
-  console.log("debounce called")
   let timer;
   return (...args) => {
     clearTimeout(timer);
     timer = setTimeout(() => { func.apply(this, args); }, timeout);
   };
 }
+
 function inputSearch(){
   //call the bookSearch function with the typed in value
-  console.log("input search called")
-  bookSearch(titleInput.value)
-  
+  bookSearch(titleInput.value);
 }
+
 const processChange = debounce(() => inputSearch());
 
-//event listener for each key
-// titleInput.addEventListener("keyup", inputSearch);
+//event listener for each keyup release
 titleInput.addEventListener("keyup", processChange);
 
-
-
-//Todo: Impliment Debouncing
-//search
+//search books from API
 function bookSearch(query) {
   //replace any space in text with a + for the newquery
   console.log("booksearch called")
   let newquery = query.replace(/\s/g, "+");
   var url = 'https://openlibrary.org/search.json?q=' + newquery;
-  // for(i = 0; i < 100; i++)
- 
-  
-  // console.log(newquery)
-  // console.log(url)
-// console.log(bookSearch())
 
   fetch(url)
   .then(res => {
@@ -78,55 +57,57 @@ function bookSearch(query) {
   })
   .then(data => {
     let { docs } = data;
-    // console.log(url)
-    // addBookObj.id = newquery;
-    // console.log(addBookObj.id)
     //Notes: call the function that will add the dropdown items under your searchbar
     //Notes: function needs to have a + for space bar
     //Notes: do forEach now but then use map to put it in an array
     //Notes: add to array then create a li for each book with different data-title data-author attributes etc,
     //You can use this to then when using the eventlistener when clicking on the book to pull the data needed
-    console.log(docs.title)
+    // console.log(docs.title)
     docs.forEach((doc, index) => {
-      // console.log(doc)
-      // console.log(doc.title)
-      // console.log(doc.work)
-      // let docTitle = doc.title
       searchArray.push(doc.title)
     })
     // console.log(searchArray)
-    // console.log(data.docs.subject)
-    // console.log(data)
-    // console.log(data.docs[0].subject[0]) //The Lord of the Rings
-    // console.log(data.docs[0].subject) //multiple search fields
-    // const firstFive = data.docs.slice(0, 5)
-    // console.log(firstFive)
-    // const firstFiveLoop = [];
-    // for(let i = 0; i < 5; i++){
-    //   // firstFiveLoop.push(data.docs[i].stringify(subject[i]))
-    //   if(i <= firstFive.length){
+    arrayToUnorderedList(searchArray)
+    
+    
     //     console.log(firstFive[i].title) //title
     //     console.log(firstFive[i].author_name) //author
     //     console.log(firstFive[i].subject.indexOf("Fiction")) //index of Fiction
-    //     console.log(firstFive[i].subject.includes("Fiction")) // if true Fiction is in array
-    //   }
-    // }
-    
-    
+    //     console.log(firstFive[i].subject.includes("Fiction")) // if true Fiction is in array  
   })
 }
 
-//   fetch(url)
-//   .then(res => {
-//     return res.json();
-//   })
-// }
-// .then(data => {
-
-// })
-
-// bookSearch(titleInput.value)
-
-function searchDropDown(){
-
+//Create the UL from the array of books that match the search
+function arrayToUnorderedList(array){
+  //create elements for ul
+  console.log("arraytoUnorderedList is set off")
+  const unorderedList = document.createElement('ul');
+  unorderedList.setAttribute("id", "searchList");
+  //creat li list elements with data from API
+  array.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    unorderedList.appendChild(li);
+  })
+  searchDiv.appendChild(unorderedList);
+  toggleSearchModal();
+  return unorderedList;
 }
+
+//toggle the dropdown search area when typing in input
+function toggleSearchModal() {
+  console.log("toggleSearchModal function is called inside arraytoUnorderedList")
+  searchHidden.classList.toggle("searchHidden")
+}
+
+//Select the book from search drop down add a classList and color
+searchDiv.addEventListener('click', (event) => {
+  event.preventDefault();
+  const target = event.target;
+  console.log(event)
+  if(target.tagName = 'li') {
+    console.log('if for event works')
+    target.classList.add('selected');
+  }
+})
+

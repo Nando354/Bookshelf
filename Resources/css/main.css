@@ -16,10 +16,6 @@
   margin-bottom: 15px;
 }
 
-.flex-row-button {
-
-}
-
 .seeMoreBtn {
   margin-bottom: 5px;
   background-color: rgb(63, 91, 247);
@@ -99,25 +95,30 @@ display: none;
   /* display: inline;  */
 }
 
-.searchResults ul{
-  width: 84%;
+.searchHidden {
+  display: none;
+}
+
+#searchResults {
+  width: 20%;
   height: auto;
   background-color: white;
   border: 2px lightgrey solid;
   border-radius: 5px;
   margin-top: 5px;
   z-index: 1;
-  
-  
+  padding: 5px;
+  position: fixed;
+  /* display: none; */
 }
 
-.searchResults ul li {
+#searchList li {
   cursor: pointer;
   list-style: none;
 }
 
-.searchResults ul li: hover {
-  background: blue;
+.selected {
+  background: rgb(98, 149, 250);
 }
 
 
@@ -142,5 +143,5 @@ display: none;
   border: none;
   border-radius: 10%;
   /* position: absolute; */
-  z-index: 0;
+  z-index: -1;
 }

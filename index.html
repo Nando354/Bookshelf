@@ -48,22 +48,10 @@
     <div class="innerModalSection">
       <label class="book-form-title" for="title-input">Title</label>
       <input required type="text" class="form-control" id="title-input" onkeyup="processChange" placeholder="Search Title" />
-      <button class="modalSearchBtn">Search</button>
-      <div class="searchResults">
-        <ul class="searchList">
-          <li>Javascript</li>
-          <li>Web Development</li>
-          <li>Javascript</li>
-          <li>Web Development</li>
-          <li>Javascript</li>
-          <li>Web Development</li>
-          <li>Javascript</li>
-          <li>Web Development</li>
-          <li>Javascript</li>
-          <li>Web Development</li>
-          <li>Javascript</li>
-          <li>Web Development</li>
-        </ul>
+      <!-- <button class="modalSearchBtn">Search</button> -->
+      <div class="searchHidden">
+        <div id="searchResults">
+        </div>
       </div>
       <label class="book-form-rating" for="rating-input">Rating</label>
       <input required type="text" class="form-control" id="rating-input" placeholder="0/5" />
