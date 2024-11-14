@@ -11,6 +11,8 @@ const searchHidden = document.querySelector(".searchHidden")
 console.log(searchDiv)
 console.log(searchHidden)
 let searchArray = []
+const unorderedList = document.createElement('ul');
+const loader = document.getElementById('loader')
 
 //Toggle Add Book Modal
 function toggleModal() {
@@ -21,9 +23,8 @@ addBookButtonElement.addEventListener("click", toggleModal);
 modalCloseBtn.addEventListener("click", toggleModal);
 
 //object for storing books
-const addBookObj = {
-  id: titleInput.value.toLowerCase()
-}
+const addBookObj = [
+]
 
 //Debouncing so search waits to make the get call to the API and not on every keystroke
 function debounce(func, timeout = 600){
@@ -46,49 +47,66 @@ titleInput.addEventListener("keyup", processChange);
 
 //search books from API
 function bookSearch(query) {
+  loader.style.display = "block";
   //replace any space in text with a + for the newquery
   console.log("booksearch called")
   let newquery = query.replace(/\s/g, "+");
   var url = 'https://openlibrary.org/search.json?q=' + newquery;
-
   fetch(url)
   .then(res => {
     return res.json();
   })
   .then(data => {
     let { docs } = data;
-    //Notes: call the function that will add the dropdown items under your searchbar
-    //Notes: function needs to have a + for space bar
     //Notes: do forEach now but then use map to put it in an array
-    //Notes: add to array then create a li for each book with different data-title data-author attributes etc,
-    //You can use this to then when using the eventlistener when clicking on the book to pull the data needed
-    // console.log(docs.title)
     docs.forEach((doc, index) => {
-      searchArray.push(doc.title)
+      createListForSearch(doc, index);
     })
-    // console.log(searchArray)
-    arrayToUnorderedList(searchArray)
-    
-    
-    //     console.log(firstFive[i].title) //title
-    //     console.log(firstFive[i].author_name) //author
-    //     console.log(firstFive[i].subject.indexOf("Fiction")) //index of Fiction
-    //     console.log(firstFive[i].subject.includes("Fiction")) // if true Fiction is in array  
+    addSearchListToDropDown();
   })
 }
 
+function createListForSearch(doc, index){
+  loader.style.display= "none";
+  console.log("createListForSearch is set off");
+  const li = document.createElement('li');
+  li.textContent = doc.title;
+  li.setAttribute("data-key", doc.key)
+  li.setAttribute("data-image", attributeForIsbn(doc))
+  // console.log(`https://covers.openlibrary.org/b/isbn/${doc.isbn[0]}`)
+  li.setAttribute("data-title", doc.title)
+  li.setAttribute("data-author", doc.author_name)
+  li.setAttribute("data-category", attributeForCategory(doc))
+  unorderedList.appendChild(li);
+}
+
+//image function to add to attribute
+function attributeForIsbn(doc) {
+  const imgIsbn = doc.isbn?.[0]
+  const imgUrl = `https://covers.openlibrary.org/b/isbn/${imgIsbn}`
+  //image returned if undefined should be a no image available
+  let finalImgUrl = imgUrl === "https://covers.openlibrary.org/b/isbn/undefined" ? "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg" : imgUrl;
+  return finalImgUrl
+}
+
+function attributeForCategory(doc) {
+  const categorySubjectFacetArray = doc?.subject_facet;
+  console.log(categorySubjectFacetArray)
+  const categorySubjectArray = doc?.subject;
+  console.log(categorySubjectArray)
+  const finalCategory = categorySubjectArray?.slice(0, 4).join(", ");
+  console.log(finalCategory)
+  let finalCategoryText = finalCategory === undefined ? "N/A" : finalCategory;
+  console.log(finalCategoryText)
+  return finalCategoryText
+}
+
+
 //Create the UL from the array of books that match the search
-function arrayToUnorderedList(array){
+function addSearchListToDropDown(){
   //create elements for ul
-  console.log("arraytoUnorderedList is set off")
-  const unorderedList = document.createElement('ul');
+  console.log("addSearchListToDropDown is set off")
   unorderedList.setAttribute("id", "searchList");
-  //creat li list elements with data from API
-  array.forEach(item => {
-    const li = document.createElement('li');
-    li.textContent = item;
-    unorderedList.appendChild(li);
-  })
   searchDiv.appendChild(unorderedList);
   toggleSearchModal();
   return unorderedList;
@@ -96,18 +114,49 @@ function arrayToUnorderedList(array){
 
 //toggle the dropdown search area when typing in input
 function toggleSearchModal() {
-  console.log("toggleSearchModal function is called inside arraytoUnorderedList")
+  console.log("toggleSearchModal function is called inside ddSearchListToDropDown")
   searchHidden.classList.toggle("searchHidden")
 }
 
-//Select the book from search drop down add a classList and color
+//Select the book from search drop down list add a classList and color and pull the book key
 searchDiv.addEventListener('click', (event) => {
   event.preventDefault();
   const target = event.target;
   console.log(event)
+  console.log(target)
   if(target.tagName = 'li') {
     console.log('if for event works')
     target.classList.add('selected');
+    let selectedTitleKey = target.dataset.key
+    console.log(selectedTitleKey)
+    retrieveBookTitleKey(selectedTitleKey)
   }
 })
+
+function retrieveBookTitleKey(selectedTitleKey){
+  console.log(selectedTitleKey)
+  console.log(`${selectedTitleKey} has been retrieved `)
+  createBookObject(selectedTitleKey)
+}
+
+function createBookObject(selectedTitleKey) {
+  console.log("createBookObject was called")
+  const targetId = selectedTitleKey;
+  searchDiv.querySelectorAll('li').forEach(li => {   
+    if (li.dataset.key === targetId) {
+      const newObject = {
+          id: `${li.dataset.key}`,
+          image: `${li.dataset.image}`,
+          title: `${li.dataset.title}`,
+          author: `${li.dataset.author}`,
+          category: `${li.dataset.category}`
+       }
+      console.log(newObject)
+      addBookObj.push(newObject)
+      console.log(addBookObj)
+    }
+  })
+}
+
+
 
