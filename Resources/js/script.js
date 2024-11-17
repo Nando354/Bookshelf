@@ -8,17 +8,19 @@ let modal = document.getElementById("modal")
 let query = titleInput.value.toLowerCase()
 const searchDiv = document.getElementById("searchResults")
 const searchHidden = document.querySelector(".searchHidden")
-console.log(searchDiv)
 console.log(searchHidden)
 let searchArray = []
 const unorderedList = document.createElement('ul');
 const loader = document.getElementById('loader')
+const addBtn = document.getElementById('modalButton')
+const ratingInput = document.getElementById("rating-input")
+
 
 //Toggle Add Book Modal
 function toggleModal() {
   modal.classList.toggle("hidden")
 }
-
+//Event Listeners for Add Book Modal
 addBookButtonElement.addEventListener("click", toggleModal);
 modalCloseBtn.addEventListener("click", toggleModal);
 
@@ -40,12 +42,13 @@ function inputSearch(){
   bookSearch(titleInput.value);
 }
 
+//Debounce called on inputSearch
 const processChange = debounce(() => inputSearch());
 
-//event listener for each keyup release
+//Event listener for each keyup release
 titleInput.addEventListener("keyup", processChange);
 
-//search books from API
+//Search books from API
 function bookSearch(query) {
   loader.style.display = "block";
   //replace any space in text with a + for the newquery
@@ -70,10 +73,11 @@ function createListForSearch(doc, index){
   loader.style.display= "none";
   console.log("createListForSearch is set off");
   const li = document.createElement('li');
-  li.textContent = doc.title;
+  //LI text in search dropdown
+  li.textContent = `**TITLE: ${doc.title}` + "\n" + "**SUBJECT: "+`${attributeForCategory(doc)}` +"\n"+ "**AUTHOR: "+ `${doc.author_name}`;
+  //LI data attributes
   li.setAttribute("data-key", doc.key)
   li.setAttribute("data-image", attributeForIsbn(doc))
-  // console.log(`https://covers.openlibrary.org/b/isbn/${doc.isbn[0]}`)
   li.setAttribute("data-title", doc.title)
   li.setAttribute("data-author", doc.author_name)
   li.setAttribute("data-category", attributeForCategory(doc))
@@ -91,13 +95,9 @@ function attributeForIsbn(doc) {
 
 function attributeForCategory(doc) {
   const categorySubjectFacetArray = doc?.subject_facet;
-  console.log(categorySubjectFacetArray)
   const categorySubjectArray = doc?.subject;
-  console.log(categorySubjectArray)
   const finalCategory = categorySubjectArray?.slice(0, 4).join(", ");
-  console.log(finalCategory)
   let finalCategoryText = finalCategory === undefined ? "N/A" : finalCategory;
-  console.log(finalCategoryText)
   return finalCategoryText
 }
 
@@ -122,22 +122,32 @@ function toggleSearchModal() {
 searchDiv.addEventListener('click', (event) => {
   event.preventDefault();
   const target = event.target;
-  console.log(event)
-  console.log(target)
   if(target.tagName = 'li') {
-    console.log('if for event works')
     target.classList.add('selected');
     let selectedTitleKey = target.dataset.key
     console.log(selectedTitleKey)
     retrieveBookTitleKey(selectedTitleKey)
+    //close the search drop down modal after selecting book title
+    toggleSearchModal();
   }
 })
 
 function retrieveBookTitleKey(selectedTitleKey){
-  console.log(selectedTitleKey)
-  console.log(`${selectedTitleKey} has been retrieved `)
+  console.log(`${selectedTitleKey} has been retrieved via retrieveBookTitleKey function`)
   createBookObject(selectedTitleKey)
+  let finalSelectedTitleKey = selectedTitleKey
+  return finalSelectedTitleKey
 }
+
+function addRatings(selectedTitleKey) {
+  console.log("addRatings function has been called")
+  console.log(selectedTitleKey)
+}
+
+ratingInput.addEventListener('click', (e)=> {
+  e.preventDefault();
+
+})
 
 function createBookObject(selectedTitleKey) {
   console.log("createBookObject was called")
@@ -151,11 +161,44 @@ function createBookObject(selectedTitleKey) {
           author: `${li.dataset.author}`,
           category: `${li.dataset.category}`
        }
-      console.log(newObject)
       addBookObj.push(newObject)
       console.log(addBookObj)
+      // saveToLocalStorage(targetId, newObject)
     }
   })
+}
+
+function saveToLocalStorage(targetId, newObject) {
+  localStorage.setItem(targetId, JSON.stringify(newObject))
+  console.log(localStorage)
+}
+
+addBtn.addEventListener('click', (e)=> {
+  e.preventDefault();
+  validateForm();
+  saveRatings();
+  toggleModal();
+})
+
+function validateForm() {
+  const titleInputValue = titleInput.value;
+  console.log(titleInputValue)
+  const ratingInputValue = ratingInput.value;
+  console.log(ratingInputValue)
+
+  if(titleInputValue === '' || ratingInputValue === '') {
+    alert('Please fill in all fields.')
+    return false;
+  }
+    return true;
+}
+
+function saveRatings() {
+  const newId = addBookObj[`${addBookObj.length}` - 1].id;
+  const ratingInputNumber = ratingInput.value;
+  addBookObj[`${addBookObj.length}` - 1].ratings = ratingInputNumber
+  const lastObj = addBookObj[`${addBookObj.length}` - 1]
+  saveToLocalStorage(newId, lastObj);
 }
 
 
