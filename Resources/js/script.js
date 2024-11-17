@@ -139,16 +139,6 @@ function retrieveBookTitleKey(selectedTitleKey){
   return finalSelectedTitleKey
 }
 
-function addRatings(selectedTitleKey) {
-  console.log("addRatings function has been called")
-  console.log(selectedTitleKey)
-}
-
-ratingInput.addEventListener('click', (e)=> {
-  e.preventDefault();
-
-})
-
 function createBookObject(selectedTitleKey) {
   console.log("createBookObject was called")
   const targetId = selectedTitleKey;
@@ -178,6 +168,7 @@ addBtn.addEventListener('click', (e)=> {
   validateForm();
   saveRatings();
   toggleModal();
+  createNewBookShelfRow();
 })
 
 function validateForm() {
@@ -202,4 +193,72 @@ function saveRatings() {
 }
 
 
+{/* <div class="flex-table row">
+<div class="flex-row image">Image</div>
+<div class="flex-row title">Title</div>
+<div class="flex-row ratings">Ratings</div>
+<div class="flex-row category">Category</div>
+<div class="flex-row author">Author</div>
+<div class="flex-row-buttons">
+  <div class="flex-row"><button class="seeMoreBtn">See more</button></div>
+  <div class="flex-row"><button class="removeBtn">Remove</button></div>
+</div>
+</div> */}
 
+function createNewBookShelfRow() {
+  const bookShelfDivRow = document.createElement("div");
+  console.log(bookShelfDivRow)
+  bookShelfDivRow.setAttribute("class", "flex-table row");
+
+  const imageDiv = document.createElement("div");
+  imageDiv.setAttribute("class", "flex-row image");
+  // imageDiv.textContent = addBookObj[`${addBookObj.length}` - 1].image
+  const imgElem = document.createElement('img');
+  imgElem.src = addBookObj[`${addBookObj.length}` - 1].image;
+  imageDiv.appendChild(imgElem);
+  bookShelfDivRow.appendChild(imageDiv);
+
+  const titleDiv = document.createElement("div");
+  titleDiv.setAttribute("class", "flex-row title");
+  titleDiv.textContent = addBookObj[`${addBookObj.length}` - 1].title
+  bookShelfDivRow.appendChild(titleDiv);
+
+  const ratingsDiv = document.createElement("div");
+  ratingsDiv.setAttribute("class", "flex-row ratings");
+  ratingsDiv.textContent = addBookObj[`${addBookObj.length}` - 1].ratings
+  bookShelfDivRow.appendChild(ratingsDiv);
+
+  const categoryDiv = document.createElement("div");
+  categoryDiv.setAttribute("class", "flex-row category");
+  categoryDiv.textContent = addBookObj[`${addBookObj.length}` - 1].category
+  bookShelfDivRow.appendChild(categoryDiv);
+
+  const authorDiv = document.createElement("div");
+  authorDiv.setAttribute("class", "flex-row author");
+  authorDiv.textContent = addBookObj[`${addBookObj.length}` - 1].author
+  bookShelfDivRow.appendChild(authorDiv);
+
+  const buttonsDiv = document.createElement("div");
+  buttonsDiv.setAttribute("class", "flex-row buttons");
+  bookShelfDivRow.appendChild(buttonsDiv);
+
+  const seeMoreDiv = document.createElement("div");
+  seeMoreDiv.setAttribute("class", "flex-row");
+  const seeMoreBtn = document.createElement("button");
+  seeMoreBtn.setAttribute("class", "seeMoreBtn");
+  seeMoreBtn.textContent = 'See more';
+  seeMoreDiv.appendChild(seeMoreBtn);
+  buttonsDiv.appendChild(seeMoreDiv);
+
+  const removeButtonDiv = document.createElement("div");
+  removeButtonDiv.setAttribute("class", "flex-row");
+  const removeBtn = document.createElement("button");
+  removeBtn.setAttribute("class", "removeBtn");
+  removeBtn.textContent = 'Remove';
+  removeButtonDiv.appendChild(removeBtn);
+  buttonsDiv.appendChild(removeButtonDiv);
+
+  const bookshelfContainer = document.getElementById("bookshelfContainer");
+  bookshelfContainer.appendChild(bookShelfDivRow);
+
+}
