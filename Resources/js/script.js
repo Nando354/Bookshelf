@@ -194,8 +194,10 @@ function saveRatings() {
 
 
 {/* <div class="flex-table row">
-<div class="flex-row image">Image</div>
-<div class="flex-row title">Title</div>
+<div class="flex-row ImgTitle">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg" class="bookImage">
+  <div class="bookTitle">Title</div>
+</div>
 <div class="flex-row ratings">Ratings</div>
 <div class="flex-row category">Category</div>
 <div class="flex-row author">Author</div>
@@ -211,17 +213,20 @@ function createNewBookShelfRow() {
   bookShelfDivRow.setAttribute("class", "flex-table row");
 
   const imageDiv = document.createElement("div");
-  imageDiv.setAttribute("class", "flex-row image");
-  // imageDiv.textContent = addBookObj[`${addBookObj.length}` - 1].image
+  imageDiv.setAttribute("class", "flex-row imgTitle");
   const imgElem = document.createElement('img');
   imgElem.src = addBookObj[`${addBookObj.length}` - 1].image;
+  imgElem.setAttribute("class", "bookImage")
   imageDiv.appendChild(imgElem);
-  bookShelfDivRow.appendChild(imageDiv);
 
   const titleDiv = document.createElement("div");
-  titleDiv.setAttribute("class", "flex-row title");
+  titleDiv.setAttribute("class", "flex-row bookTitle");
   titleDiv.textContent = addBookObj[`${addBookObj.length}` - 1].title
-  bookShelfDivRow.appendChild(titleDiv);
+  imageDiv.appendChild(titleDiv);
+
+  bookShelfDivRow.appendChild(imageDiv);
+
+  
 
   const ratingsDiv = document.createElement("div");
   ratingsDiv.setAttribute("class", "flex-row ratings");
@@ -238,8 +243,9 @@ function createNewBookShelfRow() {
   authorDiv.textContent = addBookObj[`${addBookObj.length}` - 1].author
   bookShelfDivRow.appendChild(authorDiv);
 
+
   const buttonsDiv = document.createElement("div");
-  buttonsDiv.setAttribute("class", "flex-row buttons");
+  buttonsDiv.setAttribute("class", "flex-row-buttons");
   bookShelfDivRow.appendChild(buttonsDiv);
 
   const seeMoreDiv = document.createElement("div");
@@ -247,8 +253,8 @@ function createNewBookShelfRow() {
   const seeMoreBtn = document.createElement("button");
   seeMoreBtn.setAttribute("class", "seeMoreBtn");
   seeMoreBtn.textContent = 'See more';
-  seeMoreDiv.appendChild(seeMoreBtn);
   buttonsDiv.appendChild(seeMoreDiv);
+  seeMoreDiv.appendChild(seeMoreBtn);
 
   const removeButtonDiv = document.createElement("div");
   removeButtonDiv.setAttribute("class", "flex-row");
