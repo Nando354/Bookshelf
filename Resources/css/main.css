@@ -7,6 +7,14 @@
   padding-top: 10px;
 }
 
+.headingTitle {
+  padding-left: 10%;
+}
+
+.headingRating {
+  margin-left: 10%;
+}
+
 .row {
   display: grid;
   align-items: center;
@@ -19,7 +27,8 @@
 
 .flex-row {
   display: flex;
-  padding-right: 10px;
+  /* padding-right: 10px; */
+  padding: 10px 5px 10px 0px;
 }
 
 div.imgTitle {
@@ -32,7 +41,7 @@ div.imgTitle {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  height: 60px;
+  height: 90px;
   width: 60px;
   padding-left: 25px;
 }
@@ -49,13 +58,13 @@ div.imgTitle {
   width: 20%;
 }
 
-.seeMoreBtn {
+#seeMoreBtn {
   margin-bottom: 5px;
   background-color: rgb(63, 91, 247);
   color: white;
 }
 
-.removeBtn {
+#removeBtn {
   margin-top: 5px;
   border-color:rgb(63, 91, 247);
   color: rgb(63, 91, 247);
@@ -65,7 +74,8 @@ div.imgTitle {
 .addBookModalForm {
   display: flex;
   flex-direction: column;
-  /* justify-content: space-around; */
+  justify-content: space-around;
+  margin: 8% auto;
   /* border-style: 2px;
   border-color: black; */
   border: 1px solid lightgrey;
@@ -219,3 +229,26 @@ ul {
   100% { transform: rotate(360deg); }
 }
 
+@media (min-width: 1024px) and (max-width: 2560px) {
+  
+  /* CSS */
+  .headingRating {
+    margin-left: 3%;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 1020px) {
+  
+  /* CSS */
+  .headingRating {
+    margin-left: 35%;
+  }
+
+  .headingCategory {
+    margin-left: 20%
+  }
+
+  .headingAuthor {
+    margin-left: 20%;
+  }
+}

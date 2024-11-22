@@ -5,16 +5,26 @@ const titleInput = document.getElementById("title-input")
 const addBookButtonElement = document.getElementById("addBookButtonModal")
 const modalCloseBtn = document.getElementById("btnCloseModal")
 let modal = document.getElementById("modal")
-let query = titleInput.value.toLowerCase()
-const searchDiv = document.getElementById("searchResults")
+let query = titleInput.value.toLowerCase();
+const searchDropDownDiv = document.getElementById("searchResults")
 const searchHidden = document.querySelector(".searchHidden")
-console.log(searchHidden)
-let searchArray = []
-const unorderedList = document.createElement('ul');
+let searchArray = [];
+const unorderedList = document.createElement('ul')
 const loader = document.getElementById('loader')
 const addBtn = document.getElementById('modalButton')
 const ratingInput = document.getElementById("rating-input")
 
+// console.log(bookShelfRemoveBtn)
+
+//on load call function to populate bookshelves
+window.addEventListener('load', () => {
+  getAllLocalStorageItems();
+})
+
+//refresh page
+function refreshPage() {
+  window.location.reload();
+}
 
 //Toggle Add Book Modal
 function toggleModal() {
@@ -24,8 +34,10 @@ function toggleModal() {
 addBookButtonElement.addEventListener("click", toggleModal);
 modalCloseBtn.addEventListener("click", toggleModal);
 
-//object for storing books
-const addBookObj = [
+
+
+//object for storing books only used temporarily prior to object being saved to LS
+let addBookObj = [
 ]
 
 //Debouncing so search waits to make the get call to the API and not on every keystroke
@@ -87,7 +99,7 @@ function createListForSearch(doc, index){
 //image function to add to attribute
 function attributeForIsbn(doc) {
   const imgIsbn = doc.isbn?.[0]
-  const imgUrl = `https://covers.openlibrary.org/b/isbn/${imgIsbn}`
+  const imgUrl = `https://covers.openlibrary.org/b/isbn/${imgIsbn}`+"-M.jpg"
   //image returned if undefined should be a no image available
   let finalImgUrl = imgUrl === "https://covers.openlibrary.org/b/isbn/undefined" ? "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg" : imgUrl;
   return finalImgUrl
@@ -107,7 +119,7 @@ function addSearchListToDropDown(){
   //create elements for ul
   console.log("addSearchListToDropDown is set off")
   unorderedList.setAttribute("id", "searchList");
-  searchDiv.appendChild(unorderedList);
+  searchDropDownDiv.appendChild(unorderedList);
   toggleSearchModal();
   return unorderedList;
 }
@@ -119,13 +131,13 @@ function toggleSearchModal() {
 }
 
 //Select the book from search drop down list add a classList and color and pull the book key
-searchDiv.addEventListener('click', (event) => {
+searchDropDownDiv.addEventListener('click', (event) => {
   event.preventDefault();
   const target = event.target;
   if(target.tagName = 'li') {
     target.classList.add('selected');
     let selectedTitleKey = target.dataset.key
-    console.log(selectedTitleKey)
+    // console.log(selectedTitleKey)
     retrieveBookTitleKey(selectedTitleKey)
     //close the search drop down modal after selecting book title
     toggleSearchModal();
@@ -142,7 +154,7 @@ function retrieveBookTitleKey(selectedTitleKey){
 function createBookObject(selectedTitleKey) {
   console.log("createBookObject was called")
   const targetId = selectedTitleKey;
-  searchDiv.querySelectorAll('li').forEach(li => {   
+  searchDropDownDiv.querySelectorAll('li').forEach(li => {   
     if (li.dataset.key === targetId) {
       const newObject = {
           id: `${li.dataset.key}`,
@@ -152,15 +164,29 @@ function createBookObject(selectedTitleKey) {
           category: `${li.dataset.category}`
        }
       addBookObj.push(newObject)
-      console.log(addBookObj)
-      // saveToLocalStorage(targetId, newObject)
     }
   })
 }
 
+//Local Storage Save data
 function saveToLocalStorage(targetId, newObject) {
   localStorage.setItem(targetId, JSON.stringify(newObject))
-  console.log(localStorage)
+}
+
+//Local Storage Get Data
+function getDataLocalStorage(key) {
+  const storedLocalStorageData = localStorage.getItem(key)
+  const localStorageParsedData = JSON.parse(storedLocalStorageData)
+  // console.log(localStorageParsedData)
+  // console.log(localStorageParsedData.id)
+  return localStorageParsedData
+}
+
+//Local Storage remove item then refresh page
+function removeItemLocalStorage(key) {
+  localStorage.removeItem(key);
+  console.log(`${key} has been removed`)
+  refreshPage();
 }
 
 addBtn.addEventListener('click', (e)=> {
@@ -168,15 +194,12 @@ addBtn.addEventListener('click', (e)=> {
   validateForm();
   saveRatings();
   toggleModal();
-  createNewBookShelfRow();
+  
 })
 
 function validateForm() {
   const titleInputValue = titleInput.value;
-  console.log(titleInputValue)
   const ratingInputValue = ratingInput.value;
-  console.log(ratingInputValue)
-
   if(titleInputValue === '' || ratingInputValue === '') {
     alert('Please fill in all fields.')
     return false;
@@ -190,24 +213,14 @@ function saveRatings() {
   addBookObj[`${addBookObj.length}` - 1].ratings = ratingInputNumber
   const lastObj = addBookObj[`${addBookObj.length}` - 1]
   saveToLocalStorage(newId, lastObj);
+  const lsStoredData = getDataLocalStorage(newId);
+  createNewBookShelfRow(lsStoredData);
+  //clear the object
+  addBookObj = [];
 }
 
-
-{/* <div class="flex-table row">
-<div class="flex-row ImgTitle">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg" class="bookImage">
-  <div class="bookTitle">Title</div>
-</div>
-<div class="flex-row ratings">Ratings</div>
-<div class="flex-row category">Category</div>
-<div class="flex-row author">Author</div>
-<div class="flex-row-buttons">
-  <div class="flex-row"><button class="seeMoreBtn">See more</button></div>
-  <div class="flex-row"><button class="removeBtn">Remove</button></div>
-</div>
-</div> */}
-
-function createNewBookShelfRow() {
+function createNewBookShelfRow(lsStoredData) {
+  console.log(lsStoredData)
   const bookShelfDivRow = document.createElement("div");
   console.log(bookShelfDivRow)
   bookShelfDivRow.setAttribute("class", "flex-table row");
@@ -215,32 +228,35 @@ function createNewBookShelfRow() {
   const imageDiv = document.createElement("div");
   imageDiv.setAttribute("class", "flex-row imgTitle");
   const imgElem = document.createElement('img');
-  imgElem.src = addBookObj[`${addBookObj.length}` - 1].image;
+  // imgElem.src = addBookObj[`${addBookObj.length}` - 1].image;
+  imgElem.src = lsStoredData.image;
   imgElem.setAttribute("class", "bookImage")
   imageDiv.appendChild(imgElem);
 
   const titleDiv = document.createElement("div");
   titleDiv.setAttribute("class", "flex-row bookTitle");
-  titleDiv.textContent = addBookObj[`${addBookObj.length}` - 1].title
+  // titleDiv.textContent = addBookObj[`${addBookObj.length}` - 1].title
+  titleDiv.setAttribute("data-title-id", lsStoredData.id)
+  titleDiv.textContent = lsStoredData.title;
   imageDiv.appendChild(titleDiv);
-
   bookShelfDivRow.appendChild(imageDiv);
-
-  
 
   const ratingsDiv = document.createElement("div");
   ratingsDiv.setAttribute("class", "flex-row ratings");
-  ratingsDiv.textContent = addBookObj[`${addBookObj.length}` - 1].ratings
+  // ratingsDiv.textContent = addBookObj[`${addBookObj.length}` - 1].ratings
+  ratingsDiv.textContent = lsStoredData.ratings;
   bookShelfDivRow.appendChild(ratingsDiv);
 
   const categoryDiv = document.createElement("div");
   categoryDiv.setAttribute("class", "flex-row category");
-  categoryDiv.textContent = addBookObj[`${addBookObj.length}` - 1].category
+  // categoryDiv.textContent = addBookObj[`${addBookObj.length}` - 1].category
+  categoryDiv.textContent = lsStoredData.category;
   bookShelfDivRow.appendChild(categoryDiv);
 
   const authorDiv = document.createElement("div");
   authorDiv.setAttribute("class", "flex-row author");
-  authorDiv.textContent = addBookObj[`${addBookObj.length}` - 1].author
+  // authorDiv.textContent = addBookObj[`${addBookObj.length}` - 1].author
+  authorDiv.textContent = lsStoredData.author;
   bookShelfDivRow.appendChild(authorDiv);
 
 
@@ -251,7 +267,7 @@ function createNewBookShelfRow() {
   const seeMoreDiv = document.createElement("div");
   seeMoreDiv.setAttribute("class", "flex-row");
   const seeMoreBtn = document.createElement("button");
-  seeMoreBtn.setAttribute("class", "seeMoreBtn");
+  seeMoreBtn.setAttribute("id", "seeMoreBtn");
   seeMoreBtn.textContent = 'See more';
   buttonsDiv.appendChild(seeMoreDiv);
   seeMoreDiv.appendChild(seeMoreBtn);
@@ -259,12 +275,32 @@ function createNewBookShelfRow() {
   const removeButtonDiv = document.createElement("div");
   removeButtonDiv.setAttribute("class", "flex-row");
   const removeBtn = document.createElement("button");
-  removeBtn.setAttribute("class", "removeBtn");
+  removeBtn.setAttribute("id", "removeBtn");
   removeBtn.textContent = 'Remove';
+  //Have to add the eventListener before button is added to dom
+  removeBtn.addEventListener("click", (e) => {
+    console.log(e.target)
+    console.log("remove button clicked")
+    removeItemLocalStorage(lsStoredData.id)
+  });
+
   removeButtonDiv.appendChild(removeBtn);
   buttonsDiv.appendChild(removeButtonDiv);
 
   const bookshelfContainer = document.getElementById("bookshelfContainer");
   bookshelfContainer.appendChild(bookShelfDivRow);
+}
 
+//Get all the LS items and populate the bookshelf
+function getAllLocalStorageItems() {
+  const keys = Object.keys(localStorage);
+  const objects = {};
+  //Get each key and value from LS and create a book shelf row from the value
+  keys.forEach(key => {
+    const value = localStorage.getItem(key);
+    objects[key] = JSON.parse(value);
+    createNewBookShelfRow(objects[key]);
+  });
+
+  return objects;
 }
