@@ -1,3 +1,32 @@
+header {
+  margin-left: 5%;
+}
+
+.headerDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-right: 5%;
+}
+
+.categoryAndButtonDiv {
+  display: flex;
+  flex-direction: row;
+  width: 250px;
+  align-items: center;
+}
+
+#category-input {
+  width: 55%;
+  height: 20%;
+}
+
+#addBookButtonModal {
+  width: 32%;
+  height: 25%;
+  word-wrap: normal;
+  margin-left: 10px;
+}
 .header {
   display: grid;
   /* grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr; */
@@ -5,6 +34,7 @@
   width: 90%;
   margin-bottom: 10px;
   padding-top: 10px;
+  margin-left: 5%;
 }
 
 .headingTitle {
@@ -15,6 +45,14 @@
   margin-left: 10%;
 }
 
+#bookshelfContainer {
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .row {
   display: grid;
   align-items: center;
@@ -23,12 +61,14 @@
   width: 90%;
   padding: 10px 0px 10px 0px;
   margin-bottom: 15px;
+  z-index: 1;
 }
 
 .flex-row {
   display: flex;
   /* padding-right: 10px; */
   padding: 10px 5px 10px 0px;
+  z-index: 1;
 }
 
 div.imgTitle {
@@ -73,16 +113,21 @@ div.imgTitle {
 
 .addBookModalForm {
   display: flex;
+  position: fixed;
+  left: 20%;
+  right: 30%;
+  bottom: 20%;
+  z-index: 999;
   flex-direction: column;
   justify-content: space-around;
   margin: 8% auto;
-  /* border-style: 2px;
-  border-color: black; */
-  border: 1px solid lightgrey;
+  border: 1.5px solid rgba(211, 211, 211, 0.517);
   width: 300px;
   height: 400px;
   padding: 20px;
   box-shadow: 5px 8px 5px lightgrey;
+  /* transparency set to not be see through */
+  background-color:rgb(255, 255, 255)
 }
 
 .hidden {
@@ -202,13 +247,13 @@ ul {
 
 
 /* LOADING SPINNER */
-.loadingSpinner {
+.loadSpinner {
   display: inline-block;
   padding-left: 10px;
   
 }
 
-#loader {
+#loadingSpinner {
   border: 5px solid #f3f3f3;
   border-radius: 50%;
   border-top: 5px solid rgba(11, 11, 250, 0.621);

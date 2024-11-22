@@ -8,19 +8,14 @@
 </head>
 <body>
   <header>
-    <div class="upperSearchHeadings">
+    <div class="headerDiv">
       <h1 class="myBookShelf">My Bookshelf</h1>  
+      <div class="categoryAndButtonDiv">
+        <label class="searchByCategory" for="category-input"></label>
+        <input required type="text" class="form-control" id="category-input" placeholder="Browse by Category" />
+        <button id="addBookButtonModal">Add Book</button>
+      </div>
       
-    </div>
-      <p class="searchDropDown">Search By Category</p>
-      <button id="addBookButtonModal">Add Book</button>
-    </div>
-    <!-- <div class="titleHeadings">
-      <p>Title</p>
-      <p>Ratings</p>
-      <p>Category</p>
-      <p>Author</p>
-    </div> -->
   </header>
   <div id="bookshelfContainer">
     <div class="flex-table header">
@@ -54,8 +49,8 @@
     <div class="innerModalSection">
       <label class="book-form-title" for="title-input">Title</label>
       <input required type="text" class="form-control" id="title-input" onkeyup="processChange" placeholder="Search Title" />
-      <div class="loadingSpinner">
-        <div id="loader" style="display: none;"></div>
+      <div class="loadSpinner">
+        <div id="loadingSpinner" style="display: none;"></div>
       </div>
       <!-- <button class="modalSearchBtn">Search</button> -->
       <div class="searchHidden">

@@ -10,7 +10,7 @@ const searchDropDownDiv = document.getElementById("searchResults")
 const searchHidden = document.querySelector(".searchHidden")
 let searchArray = [];
 const unorderedList = document.createElement('ul')
-const loader = document.getElementById('loader')
+const loadingSpinner = document.getElementById('loadingSpinner')
 const addBtn = document.getElementById('modalButton')
 const ratingInput = document.getElementById("rating-input")
 
@@ -49,10 +49,22 @@ function debounce(func, timeout = 600){
   };
 }
 
-function inputSearch(){
+function inputSearch(){ 
   //call the bookSearch function with the typed in value
   bookSearch(titleInput.value);
+  
 }
+
+// titleInput.addEventListener('focus',() => {
+//   console.log("input focused again")
+//   unorderedList.innerHTML = '';
+//   processChange;
+// })
+// titleInput.addEventListener('input',() => {
+//   unorderedList.innerHTML = '';
+//   console.log("input change again")
+//   processChange;
+// })
 
 //Debounce called on inputSearch
 const processChange = debounce(() => inputSearch());
@@ -62,7 +74,8 @@ titleInput.addEventListener("keyup", processChange);
 
 //Search books from API
 function bookSearch(query) {
-  loader.style.display = "block";
+  loadingSpinner.style.display = "block";
+  ratingInput.disabled = true;
   //replace any space in text with a + for the newquery
   console.log("booksearch called")
   let newquery = query.replace(/\s/g, "+");
@@ -82,7 +95,7 @@ function bookSearch(query) {
 }
 
 function createListForSearch(doc, index){
-  loader.style.display= "none";
+  loadingSpinner.style.display= "none";
   console.log("createListForSearch is set off");
   const li = document.createElement('li');
   //LI text in search dropdown
@@ -126,7 +139,7 @@ function addSearchListToDropDown(){
 
 //toggle the dropdown search area when typing in input
 function toggleSearchModal() {
-  console.log("toggleSearchModal function is called inside ddSearchListToDropDown")
+  console.log("toggleSearchModal function is called inside addSearchListToDropDown")
   searchHidden.classList.toggle("searchHidden")
 }
 
@@ -141,6 +154,10 @@ searchDropDownDiv.addEventListener('click', (event) => {
     retrieveBookTitleKey(selectedTitleKey)
     //close the search drop down modal after selecting book title
     toggleSearchModal();
+    target.classList.remove('selected')
+    ratingInput.disabled = false;
+    console.log(target.dataset.title)
+    titleInput.value = target.dataset.title;
   }
 })
 
@@ -194,6 +211,8 @@ addBtn.addEventListener('click', (e)=> {
   validateForm();
   saveRatings();
   toggleModal();
+  titleInput.value = "";
+  ratingInput.value = "";
   
 })
 
