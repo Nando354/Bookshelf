@@ -27,14 +27,24 @@ function refreshPage() {
 }
 
 //Toggle Add Book Modal
-function toggleModal() {
-  modal.classList.toggle("hidden")
+// function toggleModal() {
+//   modal.classList.toggle("hidden")
+// }
+function toggleModalOff() {
+  console.log("modal off")
+  modal.classList.remove("none")
+  modal.classList.add("hidden")
+  unorderedList.innerHTML = '';
+}
+
+function toggleModalOn() {
+  console.log("modal on")
+  modal.classList.remove("hidden")
+  modal.classList.add("none")
 }
 //Event Listeners for Add Book Modal
-addBookButtonElement.addEventListener("click", toggleModal);
-modalCloseBtn.addEventListener("click", toggleModal);
-
-
+addBookButtonElement.addEventListener("click", toggleModalOn);
+modalCloseBtn.addEventListener("click", toggleModalOff);
 
 //object for storing books only used temporarily prior to object being saved to LS
 let addBookObj = [
@@ -42,6 +52,7 @@ let addBookObj = [
 
 //Debouncing so search waits to make the get call to the API and not on every keystroke
 function debounce(func, timeout = 600){
+  console.log("debounce called from processChange")
   let timer;
   return (...args) => {
     clearTimeout(timer);
@@ -50,21 +61,19 @@ function debounce(func, timeout = 600){
 }
 
 function inputSearch(){ 
+  // processChange;
+  // toggleSearchModal();
+  
+  console.log("inputSearch called")
+  //Check if the UL has a search list already and if so clear it if retyping a search
+  const listItems = unorderedList.getElementsByTagName('li');
+  if(listItems.length > 0) {
+    unorderedList.innerHTML = '';
+  }
   //call the bookSearch function with the typed in value
   bookSearch(titleInput.value);
   
 }
-
-// titleInput.addEventListener('focus',() => {
-//   console.log("input focused again")
-//   unorderedList.innerHTML = '';
-//   processChange;
-// })
-// titleInput.addEventListener('input',() => {
-//   unorderedList.innerHTML = '';
-//   console.log("input change again")
-//   processChange;
-// })
 
 //Debounce called on inputSearch
 const processChange = debounce(() => inputSearch());
@@ -78,6 +87,7 @@ function bookSearch(query) {
   ratingInput.disabled = true;
   //replace any space in text with a + for the newquery
   console.log("booksearch called")
+  toggleSearchModalOn();
   let newquery = query.replace(/\s/g, "+");
   var url = 'https://openlibrary.org/search.json?q=' + newquery;
   fetch(url)
@@ -109,6 +119,10 @@ function createListForSearch(doc, index){
   unorderedList.appendChild(li);
 }
 
+function clearUnorderedList() {
+  unorderedList.innerHTML = ' ';
+}
+
 //image function to add to attribute
 function attributeForIsbn(doc) {
   const imgIsbn = doc.isbn?.[0]
@@ -133,19 +147,32 @@ function addSearchListToDropDown(){
   console.log("addSearchListToDropDown is set off")
   unorderedList.setAttribute("id", "searchList");
   searchDropDownDiv.appendChild(unorderedList);
-  toggleSearchModal();
+  // toggleSearchModal();
+  toggleSearchModalOn();
   return unorderedList;
 }
 
 //toggle the dropdown search area when typing in input
-function toggleSearchModal() {
-  console.log("toggleSearchModal function is called inside addSearchListToDropDown")
-  searchHidden.classList.toggle("searchHidden")
+// function toggleSearchModal() {
+//   console.log("toggleSearchModal function is called inside addSearchListToDropDown")
+//   searchHidden.classList.toggle("searchHidden")
+// }
+
+function toggleSearchModalOn() {
+  console.log("toggle search on")
+  searchHidden.classList.remove("searchHidden")
+  searchHidden.classList.add("none")
 }
 
+function toggleSearchModalOff() {
+  console.log("toggle search off")
+  searchHidden.classList.remove("none")
+  searchHidden.classList.add("searchHidden")
+}
 //Select the book from search drop down list add a classList and color and pull the book key
 searchDropDownDiv.addEventListener('click', (event) => {
   event.preventDefault();
+  console.log("searchDropDownDiv event set off")
   const target = event.target;
   if(target.tagName = 'li') {
     target.classList.add('selected');
@@ -153,7 +180,8 @@ searchDropDownDiv.addEventListener('click', (event) => {
     // console.log(selectedTitleKey)
     retrieveBookTitleKey(selectedTitleKey)
     //close the search drop down modal after selecting book title
-    toggleSearchModal();
+    // toggleSearchModal();
+    toggleSearchModalOff();
     target.classList.remove('selected')
     ratingInput.disabled = false;
     console.log(target.dataset.title)
@@ -187,11 +215,13 @@ function createBookObject(selectedTitleKey) {
 
 //Local Storage Save data
 function saveToLocalStorage(targetId, newObject) {
+  console.log("saveToLocalStorage is called")
   localStorage.setItem(targetId, JSON.stringify(newObject))
 }
 
 //Local Storage Get Data
 function getDataLocalStorage(key) {
+  console.log("getDataLocalStorage is called")
   const storedLocalStorageData = localStorage.getItem(key)
   const localStorageParsedData = JSON.parse(storedLocalStorageData)
   // console.log(localStorageParsedData)
@@ -210,13 +240,14 @@ addBtn.addEventListener('click', (e)=> {
   e.preventDefault();
   validateForm();
   saveRatings();
-  toggleModal();
+  toggleModalOn();
   titleInput.value = "";
   ratingInput.value = "";
   
 })
 
 function validateForm() {
+  console.log("validateForm is called")
   const titleInputValue = titleInput.value;
   const ratingInputValue = ratingInput.value;
   if(titleInputValue === '' || ratingInputValue === '') {
@@ -227,6 +258,7 @@ function validateForm() {
 }
 
 function saveRatings() {
+  console.log("saveRatings is called")
   const newId = addBookObj[`${addBookObj.length}` - 1].id;
   const ratingInputNumber = ratingInput.value;
   addBookObj[`${addBookObj.length}` - 1].ratings = ratingInputNumber
@@ -239,9 +271,8 @@ function saveRatings() {
 }
 
 function createNewBookShelfRow(lsStoredData) {
-  console.log(lsStoredData)
+  console.log("createNewBookShelfRow is called")
   const bookShelfDivRow = document.createElement("div");
-  console.log(bookShelfDivRow)
   bookShelfDivRow.setAttribute("class", "flex-table row");
 
   const imageDiv = document.createElement("div");
@@ -256,6 +287,7 @@ function createNewBookShelfRow(lsStoredData) {
   titleDiv.setAttribute("class", "flex-row bookTitle");
   // titleDiv.textContent = addBookObj[`${addBookObj.length}` - 1].title
   titleDiv.setAttribute("data-title-id", lsStoredData.id)
+  titleDiv.setAttribute("data-title-title", lsStoredData.title)
   titleDiv.textContent = lsStoredData.title;
   imageDiv.appendChild(titleDiv);
   bookShelfDivRow.appendChild(imageDiv);
@@ -312,6 +344,7 @@ function createNewBookShelfRow(lsStoredData) {
 
 //Get all the LS items and populate the bookshelf
 function getAllLocalStorageItems() {
+  console.log("getAllLocalStorageItems is called")
   const keys = Object.keys(localStorage);
   const objects = {};
   //Get each key and value from LS and create a book shelf row from the value

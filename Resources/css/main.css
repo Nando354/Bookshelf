@@ -131,7 +131,10 @@ div.imgTitle {
 }
 
 .hidden {
-display: none;
+  display: none;
+}
+div.none {
+  display: block;
 }
 
 #btnCloseModal {
@@ -264,6 +267,38 @@ ul {
   animation: spin 1s linear infinite;
 }
 
+/* SORT ARROWS */
+a,
+a { 
+	display: block;
+	width: 15%;
+}
+a.sort-by { 
+	padding-right: 5px;
+	position: relative;
+}
+a.sort-by:before,
+a.sort-by:after {
+	border: 4px solid transparent;
+	content: "";
+	display: block;
+	height: 0;
+	right: 5px;
+	top: 50%;
+	position: absolute;
+	width: 0;
+}
+a.sort-by:before {
+	border-bottom-color: #666;
+	margin-top: -9px;
+}
+a.sort-by:after {
+	border-top-color: #b2abab;
+	margin-top: 1px;
+}
+
+
+
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
   100% { -webkit-transform: rotate(360deg); }
@@ -297,3 +332,5 @@ ul {
     margin-left: 20%;
   }
 }
+
+
