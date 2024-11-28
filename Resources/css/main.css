@@ -17,8 +17,39 @@ header {
 }
 
 #category-input {
-  width: 55%;
-  height: 20%;
+  width: 155px;
+  border-radius: 15px;
+  border-width: 1px;
+  border-color: grey;
+}
+
+#categoryInputAndListDiv {
+  display: flex;
+  overflow: auto;
+
+}
+
+#categoryListSection {
+  margin-top: 25px;
+  font-size: 13px;
+  width: 17%;
+  height: auto;
+  background-color: rgb(254, 255, 255);
+  border: 2px lightgrey solid;
+  border-radius: 5px;
+  z-index: 2;
+  padding: 5px;
+  position: absolute;
+  overflow: auto;
+  display: hidden;
+  /* box-shadow: 5px 8px 5px lightgrey; */
+}
+
+.catLi {
+  cursor: pointer;
+  list-style: none;
+  padding-top: 10px;
+  padding-left: 0px;  
 }
 
 #addBookButtonModal {
@@ -206,6 +237,7 @@ div.none {
   /* display: none; */
 }
 
+
 ul {
   Padding-left: 10px;
 }
@@ -222,7 +254,6 @@ ul {
 .selected {
   background: rgb(98, 149, 250);
 }
-
 
 
 /* rating entry */
@@ -296,8 +327,6 @@ a.sort-by:after {
 	border-top-color: #b2abab;
 	margin-top: 1px;
 }
-
-
 
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }

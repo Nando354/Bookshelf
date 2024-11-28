@@ -11,8 +11,12 @@
     <div class="headerDiv">
       <h1 class="myBookShelf">My Bookshelf</h1>  
       <div class="categoryAndButtonDiv">
-        <label class="searchByCategory" for="category-input"></label>
-        <input required type="text" class="form-control" id="category-input" placeholder="Browse by Category" />
+        <div id="categoryInputAndListDiv">
+          <!-- <label class="searchByCategory" for="category-input"></label> -->
+          <button required type="select" class="form-control" id="category-input">Browse by Category</button>
+          <div id="categoryListSection" >
+          </div>
+        </div>
         <button id="addBookButtonModal">Add Book</button>
       </div>
       

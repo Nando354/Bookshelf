@@ -13,6 +13,11 @@ const unorderedList = document.createElement('ul')
 const loadingSpinner = document.getElementById('loadingSpinner')
 const addBtn = document.getElementById('modalButton')
 const ratingInput = document.getElementById("rating-input")
+const categoryInput = document.getElementById('category-input')
+const categoryInputandListDiv = document.getElementById('categoryInputAndListDiv')
+const categoryList = document.getElementById('categoryListSection')
+let categoryAllArray = [];
+let groupedCategoryObj = {};
 
 // console.log(bookShelfRemoveBtn)
 
@@ -310,7 +315,6 @@ function createNewBookShelfRow(lsStoredData) {
   authorDiv.textContent = lsStoredData.author;
   bookShelfDivRow.appendChild(authorDiv);
 
-
   const buttonsDiv = document.createElement("div");
   buttonsDiv.setAttribute("class", "flex-row-buttons");
   bookShelfDivRow.appendChild(buttonsDiv);
@@ -334,7 +338,6 @@ function createNewBookShelfRow(lsStoredData) {
     console.log("remove button clicked")
     removeItemLocalStorage(lsStoredData.id)
   });
-
   removeButtonDiv.appendChild(removeBtn);
   buttonsDiv.appendChild(removeButtonDiv);
 
@@ -353,6 +356,107 @@ function getAllLocalStorageItems() {
     objects[key] = JSON.parse(value);
     createNewBookShelfRow(objects[key]);
   });
-
   return objects;
 }
+
+function getAllDataLocalStorage() {
+  const keys = Object.keys(localStorage);
+  const lsObjects = {};
+  // const lsValues = [];
+  keys.forEach(key => {
+    const value = localStorage.getItem(key);
+    lsObjects[key] = JSON.parse(value);
+    // lsValues.push(value);
+  });
+  return lsObjects;
+}
+
+const allLsObjects = getAllDataLocalStorage();
+console.log(allLsObjects);
+
+categoryInput.addEventListener('click', getAllCategories)
+
+
+//Creates the drop down for the categories
+function getAllCategories() {
+  console.log("getAllCategories functions set off")
+  let categoryKey;
+  let lsCategory;
+  for(const key in allLsObjects) {
+    categoryKey = key;
+    // console.log(categoryKey)
+    lsCategory = allLsObjects[key].category;
+    // console.log(lsCategory)
+    let categorySplit = lsCategory.split(',');
+    // console.log(categorySplit)
+    let singleCategory = categorySplit[0].toUpperCase();
+    // console.log(singleCategory)
+    //move to object
+    categoryAllArray.category = singleCategory;
+    categoryAllArray.id = categoryKey;
+    categoryAllArray.push({ 'category': singleCategory, 'id': categoryKey}) 
+  }  
+  groupCategories();
+  console.log(categoryAllArray)
+}
+
+//Consoles
+console.log(`Call array of objects where the categories are stored categoryAllArray ${console.log(categoryAllArray)}`)
+// console.log(getAllCategories())
+//This is the object with the categories grouped together and(keys) per each category
+console.log(`Call the object where the categories are grouped together and shows each related ID ${console.log(groupedCategoryObj)}`)
+
+//Groups the categories by category and each id related to the category and put it in an object
+function groupCategories() {
+  categoryAllArray.forEach(item => {
+   const { category, id } = item;
+   if (!groupedCategoryObj[category]) {
+    groupedCategoryObj[category] = [];
+   }
+   groupedCategoryObj[category].push(id);
+  });  
+  createCategoryDropDownList();
+}
+
+//Create the dropdown list for categories with only one of each category
+function createCategoryDropDownList() {
+  const categoryDiv = document.getElementById("categoryListSection");
+  categoryInputandListDiv.appendChild(categoryDiv);
+  const categoryUl = document.createElement('ul');
+  categoryUl.setAttribute("id", "catUl")
+  categoryDiv.appendChild(categoryUl);
+  //Create the dropdown list via the object of categories and set attributes with the id's
+  Object.keys(groupedCategoryObj).forEach(key => {
+    console.log(`${key}: ${groupedCategoryObj[key]}`);
+    const categoryLi = document.createElement("li");
+    categoryLi.setAttribute("class", "catLi")
+    categoryLi.setAttribute("data-categoryid", groupedCategoryObj[key])
+    categoryLi.innerText = key;
+    categoryUl.appendChild(categoryLi);
+  })
+}
+
+//click on category to get the id and show the list of books from that category
+categoryList.addEventListener('click', (event) => {
+  event.preventDefault();
+  console.log("categorList section clicked");
+  const target = event.target;
+  if(target.tagName = 'li') {
+    target.classList.add('selected')
+    console.log("target clicked")
+    let selectedCategoryId = target.dataset.categoryid;
+    console.log(selectedCategoryId)
+
+    //close the modal
+    //remove the blue color
+
+    // retrieveBookTitleKey(selectedTitleKey)
+    // //close the search drop down modal after selecting book title
+    // // toggleSearchModal();
+    // toggleSearchModalOff();
+    // target.classList.remove('selected')
+    // ratingInput.disabled = false;
+    // console.log(target.dataset.title)
+    // titleInput.value = target.dataset.title;
+  }
+})
