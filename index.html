@@ -14,14 +14,14 @@
         <div id="categoryInputAndListDiv">
           <!-- <label class="searchByCategory" for="category-input"></label> -->
           <button required type="select" class="form-control" id="category-input">Browse by Category</button>
-          <div id="categoryListSection" >
+          <div id="categoryListSection" class="categoryHidden">
           </div>
         </div>
         <button id="addBookButtonModal">Add Book</button>
       </div>
       
   </header>
-  <div id="bookshelfContainer">
+  <div id="bookshelfHeaderContainer">
     <div class="flex-table header">
       <div class="flex-row headingTitle">Title
         <a href="#" class="sort-by"></a>
@@ -33,8 +33,8 @@
       <div class="flex-row headingAuthor">Author
         <a href="#" class="sort-by"></a>
       </div>
-      
     </div>
+    <div id="bookshelfContainer"></div>
 
     <!-- <div class="flex-table row">
       <div class="flex-row ImgTitle">

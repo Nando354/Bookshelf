@@ -16,6 +16,9 @@ const ratingInput = document.getElementById("rating-input")
 const categoryInput = document.getElementById('category-input')
 const categoryInputandListDiv = document.getElementById('categoryInputAndListDiv')
 const categoryList = document.getElementById('categoryListSection')
+const bookshelfHeaderContainer = document.getElementById('bookshelfHeaderContainer')
+const categoryHidden = document.querySelector(".categoryHidden")
+const categoryUnorderedList = document.getElementById("catUl");
 let categoryAllArray = [];
 let groupedCategoryObj = {};
 
@@ -23,11 +26,13 @@ let groupedCategoryObj = {};
 
 //on load call function to populate bookshelves
 window.addEventListener('load', () => {
+  console.log("window load called")
   getAllLocalStorageItems();
 })
 
 //refresh page
 function refreshPage() {
+  console.log("refreshPage called")
   window.location.reload();
 }
 
@@ -88,10 +93,10 @@ titleInput.addEventListener("keyup", processChange);
 
 //Search books from API
 function bookSearch(query) {
+  console.log("booksearch called")
   loadingSpinner.style.display = "block";
   ratingInput.disabled = true;
   //replace any space in text with a + for the newquery
-  console.log("booksearch called")
   toggleSearchModalOn();
   let newquery = query.replace(/\s/g, "+");
   var url = 'https://openlibrary.org/search.json?q=' + newquery;
@@ -110,8 +115,8 @@ function bookSearch(query) {
 }
 
 function createListForSearch(doc, index){
-  loadingSpinner.style.display= "none";
   console.log("createListForSearch is set off");
+  loadingSpinner.style.display= "none";
   const li = document.createElement('li');
   //LI text in search dropdown
   li.textContent = `**TITLE: ${doc.title}` + "\n" + "**SUBJECT: "+`${attributeForCategory(doc)}` +"\n"+ "**AUTHOR: "+ `${doc.author_name}`;
@@ -125,11 +130,13 @@ function createListForSearch(doc, index){
 }
 
 function clearUnorderedList() {
+  console.log("clearUnorderedList called")
   unorderedList.innerHTML = ' ';
 }
 
 //image function to add to attribute
 function attributeForIsbn(doc) {
+  console.log("attributeForIsbn called")
   const imgIsbn = doc.isbn?.[0]
   const imgUrl = `https://covers.openlibrary.org/b/isbn/${imgIsbn}`+"-M.jpg"
   //image returned if undefined should be a no image available
@@ -138,6 +145,7 @@ function attributeForIsbn(doc) {
 }
 
 function attributeForCategory(doc) {
+  console.log("attributeForCategory called")
   const categorySubjectFacetArray = doc?.subject_facet;
   const categorySubjectArray = doc?.subject;
   const finalCategory = categorySubjectArray?.slice(0, 4).join(", ");
@@ -237,12 +245,13 @@ function getDataLocalStorage(key) {
 //Local Storage remove item then refresh page
 function removeItemLocalStorage(key) {
   localStorage.removeItem(key);
-  console.log(`${key} has been removed`)
+  console.log(`${key} has been removed via removeItemLocalStorage`)
   refreshPage();
 }
 
 addBtn.addEventListener('click', (e)=> {
   e.preventDefault();
+  console.log("addBtn clicked")
   validateForm();
   saveRatings();
   toggleModalOn();
@@ -360,6 +369,7 @@ function getAllLocalStorageItems() {
 }
 
 function getAllDataLocalStorage() {
+  console.log("getAllDataLocalStorage is called")
   const keys = Object.keys(localStorage);
   const lsObjects = {};
   // const lsValues = [];
@@ -372,13 +382,14 @@ function getAllDataLocalStorage() {
 }
 
 const allLsObjects = getAllDataLocalStorage();
-console.log(allLsObjects);
+// console.log(allLsObjects);
 
 categoryInput.addEventListener('click', getAllCategories)
 
 
 //Creates the drop down for the categories
 function getAllCategories() {
+  toggleCategoryModalOn();
   console.log("getAllCategories functions set off")
   let categoryKey;
   let lsCategory;
@@ -397,17 +408,18 @@ function getAllCategories() {
     categoryAllArray.push({ 'category': singleCategory, 'id': categoryKey}) 
   }  
   groupCategories();
-  console.log(categoryAllArray)
+  // console.log(categoryAllArray)
 }
 
 //Consoles
-console.log(`Call array of objects where the categories are stored categoryAllArray ${console.log(categoryAllArray)}`)
+// console.log(`Call array of objects where the categories are stored categoryAllArray ${console.log(categoryAllArray)}`)
 // console.log(getAllCategories())
 //This is the object with the categories grouped together and(keys) per each category
 console.log(`Call the object where the categories are grouped together and shows each related ID ${console.log(groupedCategoryObj)}`)
 
 //Groups the categories by category and each id related to the category and put it in an object
 function groupCategories() {
+  console.log("groupCategories was called")
   categoryAllArray.forEach(item => {
    const { category, id } = item;
    if (!groupedCategoryObj[category]) {
@@ -420,20 +432,35 @@ function groupCategories() {
 
 //Create the dropdown list for categories with only one of each category
 function createCategoryDropDownList() {
+  //  Check if the UL has a search list already and if so clear it if retyping a search
+  console.log('createCategoryDropDownList was called')
   const categoryDiv = document.getElementById("categoryListSection");
   categoryInputandListDiv.appendChild(categoryDiv);
   const categoryUl = document.createElement('ul');
   categoryUl.setAttribute("id", "catUl")
   categoryDiv.appendChild(categoryUl);
+  const categoryListItems = categoryUl.getElementsByTagName('li');
+  console.log(categoryListItems)
+  console.log(categoryListItems.length)
+  if(categoryListItems.length > 0) {
+   console.log("categoryListItems is greater than 0")
+   //  categoryUnorderedList.innerHTML = '';
+  }
   //Create the dropdown list via the object of categories and set attributes with the id's
   Object.keys(groupedCategoryObj).forEach(key => {
-    console.log(`${key}: ${groupedCategoryObj[key]}`);
+    // console.log(`${key}: ${groupedCategoryObj[key]}`);
     const categoryLi = document.createElement("li");
     categoryLi.setAttribute("class", "catLi")
     categoryLi.setAttribute("data-categoryid", groupedCategoryObj[key])
     categoryLi.innerText = key;
     categoryUl.appendChild(categoryLi);
   })
+   //Check if the UL has a search list already and if so clear it if retyping a search
+  //  const categoryListItems = categoryUnorderedList.getElementsByTagName('li');
+  //  if(categoryListItems.length > 0) {
+  //   console.log("categoryListItems is greater than 0")
+  //    categoryUnorderedList.innerHTML = '';
+  //  }
 }
 
 //click on category to get the id and show the list of books from that category
@@ -442,10 +469,24 @@ categoryList.addEventListener('click', (event) => {
   console.log("categorList section clicked");
   const target = event.target;
   if(target.tagName = 'li') {
-    target.classList.add('selected')
     console.log("target clicked")
+    removeBookShelfItems();
+    target.classList.add('selected')
     let selectedCategoryId = target.dataset.categoryid;
-    console.log(selectedCategoryId)
+    const idOfBooks = selectedCategoryId;
+    const idSplitter = idOfBooks.split(',');
+    console.log(idSplitter)
+    idSplitter.forEach((id) => {
+      console.log(getDataLocalStorage(id))
+      let categoryIds = getDataLocalStorage(id); 
+      const bookshelfContainer = document.createElement('div');
+      bookshelfContainer.setAttribute('id', 'bookshelfContainer');
+      bookshelfHeaderContainer.appendChild(bookshelfContainer);
+      createNewBookShelfRow(categoryIds);
+      toggleCategoryModalOff();
+    })
+    target.classList.remove('selected')
+    // console.log(getDataLocalStorage(selectedCategoryId));
 
     //close the modal
     //remove the blue color
@@ -460,3 +501,23 @@ categoryList.addEventListener('click', (event) => {
     // titleInput.value = target.dataset.title;
   }
 })
+//Remove all the LS items in bookshelf to show only categoy items selected from LS
+function removeBookShelfItems() {
+  console.log("removeBookShelItems called")
+  window.removeEventListener('load', console.log('load removed'));
+  const elementToRemove = document.getElementById('bookshelfContainer');
+  console.log(`${elementToRemove} is being removed`)
+  elementToRemove.parentNode.removeChild(elementToRemove);
+}
+
+function toggleCategoryModalOn() {
+  console.log("toggle category modal on")
+  categoryList.classList.remove("categoryHidden")
+  categoryList.classList.add("categoryNotHidden")
+}
+
+function toggleCategoryModalOff() {
+  console.log("toggle category modal off")
+  categoryList.classList.remove("categoryNotHidden")
+  categoryList.classList.add("categoryHidden")
+}
