@@ -91,7 +91,16 @@ div.categoryNotHidden {
   align-items: center;
 }
 
-#bookShelfContainer {
+#bookshelfContainer {
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#bookCategoryContainer {
   z-index: 0;
   display: flex;
   flex-direction: column;
@@ -267,6 +276,10 @@ ul {
 
 
 .selected {
+  background: rgb(98, 149, 250);
+}
+
+.selectedCategory {
   background: rgb(98, 149, 250);
 }
 

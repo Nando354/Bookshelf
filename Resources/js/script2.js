@@ -13,19 +13,43 @@ const unorderedList = document.createElement('ul')
 const loadingSpinner = document.getElementById('loadingSpinner')
 const addBtn = document.getElementById('modalButton')
 const ratingInput = document.getElementById("rating-input")
-categoryButton = document.getElementById('category-button')
+let categoryButton = document.getElementById('category-button')
 const categoryInputandListDiv = document.getElementById('categoryInputAndListDiv')
 const categoryList = document.getElementById('categoryListSection')
 const bookshelfHeaderContainer = document.getElementById('bookshelfHeaderContainer')
 const categoryHidden = document.querySelector(".categoryHidden")
+const mainBookshelfContainer = document.getElementById("bookshelfContainer");
+const categoryDiv = document.getElementById("categoryListSection");
+console.log(mainBookshelfContainer)
+// let listItemForContainer
 let categoryAllArray = [];
 let groupedCategoryObj = {};
+let selectedCategoryArray = [];
+//All data from LS stored in this array
+let allLocalStorageBooksArray = [];
+console.log(allLocalStorageBooksArray)
+let displayBookDataArray = [];
+
 
 //on load call function to populate bookshelves on load
 window.addEventListener('load', () => {
   console.log("window load called")
-  getAllLocalStorageItems();
+  // renderBooksToPage();
+  storeLocalStorageItemsToArray();
 })
+
+
+// storeLocalStorageItemsToArray();
+//storedBookArrayofObj = [
+//{id: '/wdkfjdkfjd,
+// image: 'https//'
+// title: book title
+// }
+//]
+
+
+
+
 
 //refresh page
 function refreshPage() {
@@ -90,7 +114,7 @@ function inputSearch(){
 
 //Debounce called on inputSearch
 const processChange = debounce(() => inputSearch());
-
+console.log("debounce will call due to debounce()")
 //Event listener for each keyup release in title input in search modal
 titleInput.addEventListener("keyup", processChange);
 
@@ -120,7 +144,7 @@ function bookSearch(query) {
     addSearchListToDropDown();
   })
 }
-
+//Searching via search modal
 //creates dom for search dropdown li for book search using data attributes to store all but rating from API to li
 function createListForSearch(doc, index){
   console.log("createListForSearch is set off");
@@ -157,7 +181,7 @@ function attributeForCategory(doc) {
   console.log("attributeForCategory called")
   const categorySubjectFacetArray = doc?.subject_facet;
   const categorySubjectArray = doc?.subject;
-  const finalCategory = categorySubjectArray?.slice(0, 4).join(", ");
+  const finalCategory = categorySubjectArray?.slice(0, 1).join(", ");
   let finalCategoryText = finalCategory === undefined ? "N/A" : finalCategory;
   return finalCategoryText
 }
@@ -257,13 +281,13 @@ function createBookObject(selectedTitleKey) {
 
 //-----LOCAL STORAGE FUNCTIONS---
 
-//Local Storage Save data from newObject after stringified
+//Local Storage Save data from newObject after stringified to Local Storage
 function saveToLocalStorage(targetId, newObject) {
   console.log("saveToLocalStorage is called")
   localStorage.setItem(targetId, JSON.stringify(newObject))
 }
 
-//Local Storage Get Data
+//Local Storage Get Data from Local Storage by specific key
 function getDataLocalStorage(key) {
   console.log("getDataLocalStorage is called")
   const storedLocalStorageData = localStorage.getItem(key)
@@ -273,14 +297,103 @@ function getDataLocalStorage(key) {
   return localStorageParsedData
 }
 
-//Local Storage remove item (remove button) then refresh page
+//Local Storage remove item from Local Storage (remove button) then refresh page
 function removeItemLocalStorage(key) {
   localStorage.removeItem(key);
   console.log(`${key} has been removed via removeItemLocalStorage`)
   refreshPage();
 }
 
+//Local Storage - Get all the LS items and populate the bookshelf, function is called on original page load
+function getAllLocalStorageItems() {
+  console.log("getAllLocalStorageItems is called")
+  const keys = Object.keys(localStorage);
+  const tempObject = {};
+  //Get each key and value from LS and create a book shelf row from the value
+  keys.forEach(key => {
+    const value = localStorage.getItem(key);
+    tempObject[key] = JSON.parse(value);
+    // createNewbookshelfRow(tempObject[key]);
+  });
+  console.log(tempObject)
+  return tempObject;
+}
 
+//Local Storage - Get all the LS items individually store in an object and push to our main array allLocalStorageBooksArray
+function storeLocalStorageItemsToArray() {
+  console.log("storeLocalStorageItemsToArray is called")
+  const keys = Object.keys(localStorage);
+  let storeBooksObject = {};
+  //Get each key and value from LS and create a book shelf row from the value
+  keys.forEach(key => {
+    console.log(key);
+    const value = localStorage.getItem(key);
+    //LS data stored as an object
+    storeBooksObject = JSON.parse(value);
+    console.log(storeBooksObject)
+    console.log("storeBooksObject pushed to allLocalStorageBooksArray ")
+    //LS data object pushed to our main array
+    allLocalStorageBooksArray.push(storeBooksObject)
+  });
+  console.log(storeBooksObject)
+  console.log(allLocalStorageBooksArray)
+  console.log("reassign storeBooksObject to empty object")
+  storeBooksObject = {};
+  console.log(storeBooksObject)
+  // loop and put into array
+  let bookInLocalStorage = []
+  // let displayBookDataArray = [] // filtered list, based on category
+
+ 
+  
+  // console.log(filteredBookByCategory)
+  let currentCategory = ''
+
+  // filter and sort array based on criteria
+  // function filterAndSort() {}
+  // booksToDisplay.sort((book) => {})
+
+  // loop over array to create bookshelf rows
+
+  // checkChildElementOfContainer()
+  populateBookshelf(allLocalStorageBooksArray);
+  // console.log(listItemForContainer)
+  //Clear the array
+  // allLocalStorageBooksArray = [];
+  return allLocalStorageBooksArray;
+}
+
+
+
+
+// FUNCTION: Get list of books stored "get data"
+
+
+
+
+// FUNCTION: Render books to page "display data" called on window load.
+// function renderBooksToPage() {
+//   console.log("renderBooksToPage called")
+//   console.log(displayBookDataArray)
+//   displayBookDataArray.forEach(book => {
+//   console.log(book)
+  
+//   renderBookshelf();
+//   })
+// }
+
+function clearBookshelf() {
+  console.log("clearBookshelf is called")
+  mainBookshelfContainer.innerHTML = '';
+  while (mainBookshelfContainer.firstChild){
+    mainBookshelfContainer.removeChild(mainBookshelfContainer.firstChild)
+  }
+  console.log(mainBookshelfContainer)
+}
+
+// const allLsObjects = getAllLocalStorageItems();
+const allLSObjects = allLocalStorageBooksArray
+console.log(allLSObjects)
 
 //Add button in search modal to save selected book and ratings into LS
 addBtn.addEventListener('click', (e)=> {
@@ -305,7 +418,7 @@ function validateForm() {
     return true;
 }
 
-//Rating is saved to LS anb addBookObj is cleared
+//Rating is saved to LS anb temporary addBookObj is cleared
 function saveRatings() {
   console.log("saveRatings is called")
   const newId = addBookObj[`${addBookObj.length}` - 1].id;
@@ -313,97 +426,109 @@ function saveRatings() {
   addBookObj[`${addBookObj.length}` - 1].ratings = ratingInputNumber
   const lastObj = addBookObj[`${addBookObj.length}` - 1]
   saveToLocalStorage(newId, lastObj);
+  
+  refreshPage()
   const lsStoredData = getDataLocalStorage(newId);
-  createNewbookshelfRow(lsStoredData);
+  //NEW NOTE: Remove createNewbookshelfRow and replace with storing this in the array of objects that represents data pushed to LS.
+  console.log(lsStoredData)
+  //Push any newly added book
+  // createNewbookshelfRow(lsStoredData);
+  // renderBooksToPage();
+ 
   //clear the object
   addBookObj = [];
 }
 
 const bookshelfDivRow = document.createElement("div");
 
-//Function that creates the dom for bookshelves
-function createNewbookshelfRow(lsStoredData) {
-  console.log("createNewbookshelfRow is called")
-  // const bookshelfDivRow = document.createElement("div");
-  bookshelfDivRow.setAttribute("class", "flex-table row");
 
-  const imageDiv = document.createElement("div");
-  imageDiv.setAttribute("class", "flex-row imgTitle");
-  const imgElem = document.createElement('img');
-  // imgElem.src = addBookObj[`${addBookObj.length}` - 1].image;
-  imgElem.src = lsStoredData.image;
-  imgElem.setAttribute("class", "bookImage")
-  imageDiv.appendChild(imgElem);
 
-  const titleDiv = document.createElement("div");
-  titleDiv.setAttribute("class", "flex-row bookTitle");
-  // titleDiv.textContent = addBookObj[`${addBookObj.length}` - 1].title
-  titleDiv.setAttribute("data-title-id", lsStoredData.id)
-  titleDiv.setAttribute("data-title-title", lsStoredData.title)
-  titleDiv.textContent = lsStoredData.title;
-  imageDiv.appendChild(titleDiv);
-  bookshelfDivRow.appendChild(imageDiv);
+//Map through the allLocalStorageBooksArray and for each book in the array pull the data and create the div that make up the bookshelf, then return that div from this listItemforContainer variable where we perform the map
 
-  const ratingsDiv = document.createElement("div");
-  ratingsDiv.setAttribute("class", "flex-row ratings");
-  // ratingsDiv.textContent = addBookObj[`${addBookObj.length}` - 1].ratings
-  ratingsDiv.textContent = lsStoredData.ratings;
-  bookshelfDivRow.appendChild(ratingsDiv);
+// console.log(listItemForContainer)
+// const listItemForContainer = allLocalStorageBooksArray.map(bookItemFromArray => {
 
-  const categoryDiv = document.createElement("div");
-  categoryDiv.setAttribute("class", "flex-row category");
-  // categoryDiv.textContent = addBookObj[`${addBookObj.length}` - 1].category
-  categoryDiv.textContent = lsStoredData.category;
-  bookshelfDivRow.appendChild(categoryDiv);
+function updateListItemForContainerArray(arrayToUpdate) {
+    arrayToUpdate.map(bookItemFromArray => {
+      console.log("listItemForContainer has the map method used")
+      console.log(bookItemFromArray);
 
-  const authorDiv = document.createElement("div");
-  authorDiv.setAttribute("class", "flex-row author");
-  // authorDiv.textContent = addBookObj[`${addBookObj.length}` - 1].author
-  authorDiv.textContent = lsStoredData.author;
-  bookshelfDivRow.appendChild(authorDiv);
+      //create the div that will store the individual book book data to display with attribute "flex-table row"
+      const bookshelfDivRow = document.createElement("div");
+      bookshelfDivRow.setAttribute("class", "flex-table row");
 
-  const buttonsDiv = document.createElement("div");
-  buttonsDiv.setAttribute("class", "flex-row-buttons");
-  bookshelfDivRow.appendChild(buttonsDiv);
+      const imageDiv = document.createElement("div");
+      imageDiv.setAttribute("class", "flex-row imgTitle");
+      const imgElem = document.createElement('img');
+      // imgElem.src = addBookObj[`${addBookObj.length}` - 1].image;
+      imgElem.src = bookItemFromArray.image;
+      imgElem.setAttribute("class", "bookImage")
+      imageDiv.appendChild(imgElem);
 
-  const seeMoreDiv = document.createElement("div");
-  seeMoreDiv.setAttribute("class", "flex-row");
-  const seeMoreBtn = document.createElement("button");
-  seeMoreBtn.setAttribute("id", "seeMoreBtn");
-  seeMoreBtn.textContent = 'See more';
-  buttonsDiv.appendChild(seeMoreDiv);
-  seeMoreDiv.appendChild(seeMoreBtn);
+      const titleDiv = document.createElement("div");
+      titleDiv.setAttribute("class", "flex-row bookTitle");
+      // titleDiv.textContent = addBookObj[`${addBookObj.length}` - 1].title
+      titleDiv.setAttribute("data-title-id", bookItemFromArray.id)
+      titleDiv.setAttribute("data-title-title", bookItemFromArray.title)
+      titleDiv.textContent = bookItemFromArray.title;
+      imageDiv.appendChild(titleDiv);
+      bookshelfDivRow.appendChild(imageDiv);
 
-  const removeButtonDiv = document.createElement("div");
-  removeButtonDiv.setAttribute("class", "flex-row");
-  const removeBtn = document.createElement("button");
-  removeBtn.setAttribute("id", "removeBtn");
-  removeBtn.textContent = 'Remove';
-  //Have to add the eventListener before button is added to dom
-  removeBtn.addEventListener("click", (e) => {
-    console.log(e.target)
-    console.log("remove button clicked")
-    removeItemLocalStorage(lsStoredData.id)
-  });
-  removeButtonDiv.appendChild(removeBtn);
-  buttonsDiv.appendChild(removeButtonDiv);
+      const ratingsDiv = document.createElement("div");
+      ratingsDiv.setAttribute("class", "flex-row ratings");
+      // ratingsDiv.textContent = addBookObj[`${addBookObj.length}` - 1].ratings
+      ratingsDiv.textContent = bookItemFromArray.ratings;
+      bookshelfDivRow.appendChild(ratingsDiv);
 
-  //TODO: Go to where this was called and after this function attach these dom elements to the needed container.
+      const categoryDiv = document.createElement("div");
+      categoryDiv.setAttribute("class", "flex-row category");
+      // categoryDiv.textContent = addBookObj[`${addBookObj.length}` - 1].category
+      categoryDiv.textContent = bookItemFromArray.category;
+      bookshelfDivRow.appendChild(categoryDiv);
 
-  //TODO: Remove category container and replace with bookshelfcontainer
-  //use if else statement
+      const authorDiv = document.createElement("div");
+      authorDiv.setAttribute("class", "flex-row author");
+      // authorDiv.textContent = addBookObj[`${addBookObj.length}` - 1].author
+      authorDiv.textContent = bookItemFromArray.author;
+      bookshelfDivRow.appendChild(authorDiv);
 
-  // const bookshelfContainer = document.getElementById("bookshelfContainer");
-  // const bookCategoryContainer = document.getElementById("bookCategoryContainer");
-  // const childElement = document.querySelectorAll(".row");
+      const buttonsDiv = document.createElement("div");
+      buttonsDiv.setAttribute("class", "flex-row-buttons");
+      bookshelfDivRow.appendChild(buttonsDiv);
 
-  // bookshelfContainer.appendChild(bookshelfDivRow);
+      const seeMoreDiv = document.createElement("div");
+      seeMoreDiv.setAttribute("class", "flex-row");
+      const seeMoreBtn = document.createElement("button");
+      seeMoreBtn.setAttribute("id", "seeMoreBtn");
+      seeMoreBtn.textContent = 'See more';
+      buttonsDiv.appendChild(seeMoreDiv);
+      seeMoreDiv.appendChild(seeMoreBtn);
+
+      const removeButtonDiv = document.createElement("div");
+      removeButtonDiv.setAttribute("class", "flex-row");
+      const removeBtn = document.createElement("button");
+      removeBtn.setAttribute("id", "removeBtn");
+      removeBtn.textContent = 'Remove';
+      //Have to add the eventListener before button is added to dom
+      removeBtn.addEventListener("click", (e) => {
+        console.log(e.target)
+        console.log("remove button clicked")
+        removeItemLocalStorage(bookItemFromArray.id)
+      })
+      removeButtonDiv.appendChild(removeBtn);
+      buttonsDiv.appendChild(removeButtonDiv);
+
+      console.log(bookshelfDivRow)
+     
+      mainBookshelfContainer.appendChild(bookshelfDivRow);
+      
+    })
+    return bookshelfDivRow;
 }
 
 
-function createNewCategoryShelfRow(lsStoredData) {
-
-}
+// listItemForContainer = updateListItemForContainerArray(displayBookDataArray)
+// console.log(listItemForContainer)
 
 function checkChildElementOfContainer() {
   //Creates it for Each Key from getAllLocalStorageItems function
@@ -433,48 +558,16 @@ function checkChildElementOfContainer() {
       childElement.forEach(child => {
         child.parentNode.removeChild(child);
       })
-      bookShelfContainer.appendChild(bookshelfDivRow);
+      bookshelfContainer.appendChild(bookshelfDivRow);
       return;
     }  
   }
 
 }
 
-// FUNCTION: Get list of books stored "get data"
-
-// FUNCTION: Render books to page "display data"
-
-//Get all the LS items and populate the bookshelf, function is called on original page load
-function getAllLocalStorageItems() {
-  console.log("getAllLocalStorageItems is called")
-  const keys = Object.keys(localStorage);
-  const objects = {};
-  //Get each key and value from LS and create a book shelf row from the value
-  keys.forEach(key => {
-    const value = localStorage.getItem(key);
-    objects[key] = JSON.parse(value);
-    createNewbookshelfRow(objects[key]);
-  });
-
-
-  // loop and put into array
-  let bookInLocalStorage = []
-  let booksToDisplay = [] // filtered list, based on category
-  let currentCategory = ''
-
-  // filter and sort array based on criteria
-  function filterAndSort() {}
-  booksToDisplay.sort((book) => {})
-
-  // loop over array to create bookshelf rows
-
-
-  checkChildElementOfContainer()
-  return objects;
-}
 
 //-----Categories Section------
-
+//NEW NOTE: Similar to getAllDataLocalStorageItems so just use one instead.
 //Gets all data in local storage put it in allLSObjects variable to use for Browse by Categories
 function getAllDataLocalStorage() {
   console.log("getAllDataLocalStorage is called")
@@ -485,18 +578,51 @@ function getAllDataLocalStorage() {
     const value = localStorage.getItem(key);
     lsObjects[key] = JSON.parse(value);
   });
-  return lsObjects;
+
+  // return lsObjects;
 }
-const allLsObjects = getAllDataLocalStorage();
-console.log(allLsObjects);
+// const allLsObjects = getAllDataLocalStorage();
+
+
 
 
 
 // categoryButton.addEventListener('click', getAllCategories)
 categoryButton.addEventListener('click', checkIfCategoryDropDownExist)
 
+
+function pullCategories() {
+
+}
+
+
+//Groups books by category and pushes them to an object groupingByCategory
+// let groupingByCategory = allLocalStorageBooksArray.reduce((acc, curr) => {
+//   console.log("groupingByCategory variable")
+//   (acc[curr.category] = acc[curr.category] || []).push(curr);
+//   return acc;
+// }, {});
+// console.log(groupingByCategory)
+
+
+let groupingByCategory 
+//Groups books by category and pushes them to an object groupingByCategory
+function createGroupByCategory() {
+  groupingByCategory = allLocalStorageBooksArray.reduce((acc, curr) => {
+    
+    (acc[curr.category] = acc[curr.category] || []).push(curr);
+    
+    return acc;
+  }, {});
+  console.log(groupingByCategory)
+}
+
+
+
 function checkIfCategoryDropDownExist() {
   console.log("checkIfCategoryDropDownExist called")
+  createGroupByCategory();
+  console.log(groupingByCategory)
   existingElement1 = document.getElementById('categoryListSection');
   existingElement2 = document.getElementById('catUl')
   console.log(existingElement2)
@@ -507,7 +633,10 @@ function checkIfCategoryDropDownExist() {
     // let elementToRemove = existingElement2;
     // console.log(`${elementToRemove} is being removed`)
     // elementToRemove.parentNode.removeChild(elementToRemove);
-    getAllCategories();
+    // getAllCategories();
+    
+    createCategoryDropDownList();
+    toggleCategoryModalOn();  
   } else {
     console.log("Unordered List already exists")
     toggleCategoryModalOn();
@@ -517,138 +646,59 @@ function checkIfCategoryDropDownExist() {
   }
 }
 
-//Loops through the allLsObjects which is the LS data, pulls category, makes uppercase, pushes category and id to categoryAllArray
-function getAllCategories() {
-  //When nothing is stored in LS this causes an alert and prevents further button click actions
-  if(localStorage.length === 0) {
-    alert("No Categories Currently Available");
-    return;
-  }else {
-    toggleCategoryModalOn();
-    console.log("getAllCategories functions set off")
-    let categoryKey;
-    let lsCategory;
-    for(const key in allLsObjects) {
-      categoryKey = key;
-      // console.log(categoryKey)
-      lsCategory = allLsObjects[key].category;
-      // console.log(lsCategory)
-      let categorySplit = lsCategory.split(',');
-      // console.log(categorySplit)
-      let singleCategory = categorySplit[0].toUpperCase();
-      // console.log(singleCategory)
-      //move to object
-      categoryAllArray.category = singleCategory;
-      categoryAllArray.id = categoryKey;
-      categoryAllArray.push({ 'category': singleCategory, 'id': categoryKey}) 
-    }  
-    groupCategories();
-    // console.log(categoryAllArray)
-  }
-}
-
-//Consoles
-// console.log(`Call array of objects where the categories are stored categoryAllArray ${console.log(categoryAllArray)}`)
-// console.log(getAllCategories())
-//This is the object with the categories grouped together and(keys) per each category
-// console.log(`Call the object where the categories are grouped together and shows each related ID ${console.log(groupedCategoryObj)}`)
-
-//Groups the categories by category and each id related to the category and put it in an object of arrays
-//Gets data from the categoryAllArray like id and category and groups it buy category into groupedCategoryObj object
-function groupCategories() {
-  console.log("groupCategories was called")
-  //To group items based on their category property and store the corresponding id values in an array
-  categoryAllArray.forEach(item => {
-   // extracts the category and id properties from the current item object and assigns them to variables.
-   const { category, id } = item;
-   if (!groupedCategoryObj[category]) {
-    groupedCategoryObj[category] = [];
-   }
-   //adds the id to the array associated with the category key
-   groupedCategoryObj[category].push(id);
-  });  
-
-  // const categoryUl = document.getElementById("catUl")
-  // if(!categoryUl) {
-  //   console.log("groupCategories categoryUl does not exist")
-  //   // return;
-  //   createCategoryDropDownList();
-  // }else {
-  //   console.log("groupCategories categoryUl does exist")
-  //   createCategoryDropDownList();
-  // }
-  createCategoryDropDownList();
-}
 
 //Create the dropdown list for categories with only one of each category
 function createCategoryDropDownList() {
   //Check if the UL has a search list already and if so clear it if retyping a search
   console.log('createCategoryDropDownList was called')
-  const parentElement =document.getElementById("categoryListSection");
+  const parentElement = document.getElementById("categoryListSection");
   const childElement = document.getElementById("catUl")
   //If Else to check if the UL catUl is already created or not to not duplicate it
   //UL does exist then do not recreate UL, just create the LI's
-  if(childElement) {
-    console.log("catUl child element exists")
-    const categoryDiv = document.getElementById("categoryListSection");
-    const categoryUl = document.getElementById("catUl");
-    // categoryUl.setAttribute("id", "catUl")
+  // if(childElement) {
+  //   console.log("catUl child element exists")
+  //   const categoryDiv = document.getElementById("categoryListSection");
+  //   const categoryUl = document.getElementById("catUl");
+  //   categoryUl.setAttribute("id", "catUl")
     
-    Object.keys(groupedCategoryObj).forEach(key => {
-      console.log(`${key}: ${groupedCategoryObj[key]}`);
-      const categoryLi = document.createElement("li");
-      categoryLi.setAttribute("class", "catLi")
-      categoryLi.setAttribute("data-categoryid", groupedCategoryObj[key])
-      categoryLi.innerText = key;
-      categoryUl.appendChild(categoryLi);
+  //   Object.keys(groupedCategoryObj).forEach(key => {
+  //     console.log(`${key}: ${groupedCategoryObj[key]}`);
+  //     const categoryLi = document.createElement("li");
+  //     categoryLi.setAttribute("class", "catLi")
+  //     categoryLi.setAttribute("data-categoryid", groupedCategoryObj[key])
+  //     categoryLi.innerText = key;
+  //     categoryUl.appendChild(categoryLi);
+  //   })
+  // }
+  categoryInputandListDiv.appendChild(categoryDiv);
+  const categoryUl = document.createElement('ul');
+  categoryUl.setAttribute("id", "catUl")
+  categoryDiv.appendChild(categoryUl);
+  //returns an array of key value pairs from an object
+  console.log(Object.entries(groupingByCategory))
+  const categoryListItems = Object.entries(groupingByCategory).map(([key, value]) => {
+    console.log(`${key}: ${value}`)
+    let categoryValue = value.forEach(categoryData => {
+      console.log(categoryData);
     })
-    //UL does not exist create the UL and LI's and the All Categories
-  } else {
-    console.log("catUl child element does not exist")
-    const categoryDiv = document.getElementById("categoryListSection");
-    categoryInputandListDiv.appendChild(categoryDiv);
-    const categoryUl = document.createElement('ul');
-    categoryUl.setAttribute("id", "catUl")
-    categoryDiv.appendChild(categoryUl);
-    //Create the dropdown list via the object of categories and set attributes with the id's
-    Object.keys(groupedCategoryObj).forEach(key => {
-      console.log(`${key}: ${groupedCategoryObj[key]}`);
-      const categoryLi = document.createElement("li");
-      categoryLi.setAttribute("class", "catLi")
-      categoryLi.setAttribute("data-categoryid", groupedCategoryObj[key])
-      categoryLi.innerText = key;
-      categoryUl.appendChild(categoryLi);
-    // const categoryListItems = categoryUl.getElementsByTagName('li');
-    // console.log(categoryListItems)
-    // console.log(categoryListItems.length)
-    // if(categoryListItems.length > 0) {
-    //  console.log("categoryListItems is greater than 0")
-    //  //  categoryUnorderedList.innerHTML = '';
-    }) 
-    //Create one li item for All Categories 
-    // const categoryLiForAll = document.createElement("li")
-    // categoryLiForAll.setAttribute("class", "catLi")
-    // categoryLiForAll.setAttribute("data-categoryid", "123")
-    // categoryLiForAll.innerText = "ALL CATEGORIES";
-    // categoryUl.appendChild(categoryLiForAll);
 
-    //Create button for all Categories to escape single category mode
-    const categoryAllBtn = document.createElement("button");
-    categoryAllBtn.setAttribute("class", "allCategoriesBtn")
-    categoryAllBtn.textContent = "ALL CATEGORIES";
-
-    categoryUl.insertAdjacentElement("afterend", categoryAllBtn);
-    categoryAllBtn.addEventListener('click', getAllLocalStorageItems)
-  }
-   //Check if the UL has a search list already and if so clear it if retyping a search
-  //  const categoryListItems = categoryUnorderedList.getElementsByTagName('li');
-  //  if(categoryListItems.length > 0) {
-  //   console.log("categoryListItems is greater than 0")
-  //    categoryUnorderedList.innerHTML = '';
-  //  }
+    const categoryLi = document.createElement("li");
+    categoryLi.setAttribute("class", "catLi")
+    let text = `${key}`
+    categoryLi.textContent = text.toUpperCase();
+    categoryUl.appendChild(categoryLi);
+  })
+  const categoryLiForAll = document.createElement("li")
+  categoryLiForAll.setAttribute("class", "catLi")
+  categoryLiForAll.setAttribute("data-categoryid", "123")
+  categoryLiForAll.innerText = "ALL CATEGORIES";
+  categoryUl.appendChild(categoryLiForAll);
+  
 }
 
-//click on category to get the id and show the list of books from that category
+
+
+// //click on category to get the id and show the list of books from that category
 categoryList.addEventListener('click', (event) => {
   event.preventDefault();
   console.log("categoryList section clicked");
@@ -658,44 +708,37 @@ categoryList.addEventListener('click', (event) => {
     console.log("target clicked")
     console.log(target)
     target.classList.add('selectedCategory')
-    
-    let selectedCategoryId = target.dataset.categoryid;
-    const idOfBooks = selectedCategoryId;
-    console.log(idOfBooks)
-    const idSplitter = idOfBooks.split(',');
-    console.log(idSplitter)
-    idSplitter.forEach((id) => {
-      console.log(getDataLocalStorage(id))
-      let categoryIds = getDataLocalStorage(id); 
-      const bookCategoryContainer = document.createElement('div');
-      // const bookCategoryContainer = getElementById("bookCategoryContainer")
-      bookCategoryContainer.setAttribute('id', 'bookCategoryContainer');
-      bookshelfHeaderContainer.appendChild(bookCategoryContainer);
-      createNewbookshelfRow(categoryIds);
-      toggleCategoryModalOff();
-    })
-    removebookshelfItems();
-    const bookCategoryContainer = document.getElementById("bookCategoryContainer");
-    bookCategoryContainer.appendChild(bookshelfDivRow);
-    // target.classList.remove('selected')
-    // console.log(getDataLocalStorage(selectedCategoryId));
+    let selectedCategoryText = target.innerText;
+    console.log(selectedCategoryText)
+    categoryToBookshelf(selectedCategoryText)
+    // target.classList.remove('selectedCategory')
+    selectedCategory();
+    toggleCategoryModalOff();
 
-    //close the modal
-    //remove the blue color
-
-    // retrieveBookTitleKey(selectedTitleKey)
-    // //close the search drop down modal after selecting book title
-    // // toggleSearchModal();
-    // toggleSearchModalOff();
-    // target.classList.remove('selected')
-    // ratingInput.disabled = false;
-    // console.log(target.dataset.title)
-    // titleInput.value = target.dataset.title;
-  }else {
-    return;
   }
-  selectedCategory();
+  
 })
+
+
+function categoryToBookshelf(selectedCategoryText) {
+  console.log(selectedCategoryText)
+  const categoryListItems = Object.entries(groupingByCategory).filter(([key, value]) => {
+    if(key.toUpperCase() === selectedCategoryText) {
+      console.log(key)
+      console.log(value)
+      clearBookshelf();
+      console.log("populateBookshelf on value called")
+      populateBookshelf(value);  
+      
+      
+    }else if(selectedCategoryText === "ALL CATEGORIES") {
+      console.log("ALL CATEGORIES CLICKED")
+      clearBookshelf();
+      populateBookshelf(allLocalStorageBooksArray)
+      
+    }
+  })
+}
 
 
 
@@ -731,11 +774,7 @@ function toggleCategoryModalOn() {
 function toggleCategoryModalOff() {
   console.log("toggle category modal off")
   categoryList.classList.remove("categoryNotHidden")
-  categoryList.classList.add("categoryHidden")
-  //prevent duplicate lists to be created on multiple button clicks for category button
-  // categoryUlCurrent = document.getElementById('catUl');
-  // categoryUlCurrent.innerHTML = '';
-  
+  categoryList.classList.add("categoryHidden") 
 }
 
 //Create a class .selectedCategory to highlight category selection and prevent duplicating of categories
@@ -756,3 +795,25 @@ function selectedCategory() {
   });
 
 }
+
+//Create array to store books that will display in bookshelf
+function populateBookshelf(arrayToDisplay) {
+  console.log("populateBookshelf is called")
+  //clears array and therefore bookshelf
+  displayBookDataArray = displayBookDataArray = [];
+  //loops through each array and populates array that will display
+  arrayToDisplay.forEach(item => {
+    console.log(item)
+    displayBookDataArray.push(item)
+  })
+  // console.log(listItemForContainer)
+  console.log(displayBookDataArray)
+  console.log(updateListItemForContainerArray(displayBookDataArray));
+
+  
+  return displayBookDataArray;
+}
+
+console.log(displayBookDataArray)
+
+
