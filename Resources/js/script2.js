@@ -38,35 +38,11 @@ window.addEventListener('load', () => {
   storeLocalStorageItemsToArray();
 })
 
-
-// storeLocalStorageItemsToArray();
-//storedBookArrayofObj = [
-//{id: '/wdkfjdkfjd,
-// image: 'https//'
-// title: book title
-// }
-//]
-
-
-
-
-
 //refresh page
 function refreshPage() {
   console.log("refreshPage called")
   window.location.reload();
 }
-
-//Toggle Add Book Modal
-// function toggleModal() {
-//   modal.classList.toggle("hidden")
-// }
-
-
-
-// Check if the input is disabled
-
-
 
 //Add book and ratings modal off
 function toggleModalOff() {
@@ -117,10 +93,6 @@ const processChange = debounce(() => inputSearch());
 console.log("debounce will call due to debounce()")
 //Event listener for each keyup release in title input in search modal
 titleInput.addEventListener("keyup", processChange);
-
-// function processChanged() {
-//   const processChange = debounce(() => inputSearch());
-// }
 
 //Search books from API once a query is typed into title input in search modal
 function bookSearch(query) {
@@ -186,7 +158,6 @@ function attributeForCategory(doc) {
   return finalCategoryText
 }
 
-
 //Create the UL from the array of books that match the search and attaches to search div
 function addSearchListToDropDown(){
   //create elements for ul
@@ -197,12 +168,6 @@ function addSearchListToDropDown(){
   toggleSearchModalOn();
   return unorderedList;
 }
-
-//toggle the dropdown search area when typing in input
-// function toggleSearchModal() {
-//   console.log("toggleSearchModal function is called inside addSearchListToDropDown")
-//   searchHidden.classList.toggle("searchHidden")
-// }
 
 //Search dropDown modal on
 function toggleSearchModalOn() {
@@ -247,7 +212,6 @@ function retrieveBookTitleKey(selectedTitleKey){
   let finalSelectedTitleKey = selectedTitleKey
   return finalSelectedTitleKey
 }
-
 
 //TESTING THIS FUNCTION --works add a prompt and prevent further adding of book
 function checkIfTitleKeyIsAlreadyStored(selectedTitleKey) {
@@ -343,10 +307,6 @@ function storeLocalStorageItemsToArray() {
   // loop and put into array
   let bookInLocalStorage = []
   // let displayBookDataArray = [] // filtered list, based on category
-
- 
-  
-  // console.log(filteredBookByCategory)
   let currentCategory = ''
 
   // filter and sort array based on criteria
@@ -354,33 +314,9 @@ function storeLocalStorageItemsToArray() {
   // booksToDisplay.sort((book) => {})
 
   // loop over array to create bookshelf rows
-
-  // checkChildElementOfContainer()
   populateBookshelf(allLocalStorageBooksArray);
-  // console.log(listItemForContainer)
-  //Clear the array
-  // allLocalStorageBooksArray = [];
   return allLocalStorageBooksArray;
 }
-
-
-
-
-// FUNCTION: Get list of books stored "get data"
-
-
-
-
-// FUNCTION: Render books to page "display data" called on window load.
-// function renderBooksToPage() {
-//   console.log("renderBooksToPage called")
-//   console.log(displayBookDataArray)
-//   displayBookDataArray.forEach(book => {
-//   console.log(book)
-  
-//   renderBookshelf();
-//   })
-// }
 
 function clearBookshelf() {
   console.log("clearBookshelf is called")
@@ -426,28 +362,17 @@ function saveRatings() {
   addBookObj[`${addBookObj.length}` - 1].ratings = ratingInputNumber
   const lastObj = addBookObj[`${addBookObj.length}` - 1]
   saveToLocalStorage(newId, lastObj);
-  
   refreshPage()
   const lsStoredData = getDataLocalStorage(newId);
   //NEW NOTE: Remove createNewbookshelfRow and replace with storing this in the array of objects that represents data pushed to LS.
   console.log(lsStoredData)
-  //Push any newly added book
-  // createNewbookshelfRow(lsStoredData);
-  // renderBooksToPage();
- 
   //clear the object
   addBookObj = [];
 }
 
 const bookshelfDivRow = document.createElement("div");
 
-
-
 //Map through the allLocalStorageBooksArray and for each book in the array pull the data and create the div that make up the bookshelf, then return that div from this listItemforContainer variable where we perform the map
-
-// console.log(listItemForContainer)
-// const listItemForContainer = allLocalStorageBooksArray.map(bookItemFromArray => {
-
 function updateListItemForContainerArray(arrayToUpdate) {
     arrayToUpdate.map(bookItemFromArray => {
       console.log("listItemForContainer has the map method used")
@@ -517,18 +442,10 @@ function updateListItemForContainerArray(arrayToUpdate) {
       })
       removeButtonDiv.appendChild(removeBtn);
       buttonsDiv.appendChild(removeButtonDiv);
-
-      console.log(bookshelfDivRow)
-     
-      mainBookshelfContainer.appendChild(bookshelfDivRow);
-      
+      mainBookshelfContainer.appendChild(bookshelfDivRow);  
     })
     return bookshelfDivRow;
 }
-
-
-// listItemForContainer = updateListItemForContainerArray(displayBookDataArray)
-// console.log(listItemForContainer)
 
 function checkChildElementOfContainer() {
   //Creates it for Each Key from getAllLocalStorageItems function
@@ -562,7 +479,6 @@ function checkChildElementOfContainer() {
       return;
     }  
   }
-
 }
 
 
@@ -573,39 +489,17 @@ function getAllDataLocalStorage() {
   console.log("getAllDataLocalStorage is called")
   const keys = Object.keys(localStorage);
   const lsObjects = {};
- 
   keys.forEach(key => {
     const value = localStorage.getItem(key);
     lsObjects[key] = JSON.parse(value);
   });
-
-  // return lsObjects;
 }
-// const allLsObjects = getAllDataLocalStorage();
-
-
-
-
 
 // categoryButton.addEventListener('click', getAllCategories)
 categoryButton.addEventListener('click', checkIfCategoryDropDownExist)
 
-
-function pullCategories() {
-
-}
-
-
-//Groups books by category and pushes them to an object groupingByCategory
-// let groupingByCategory = allLocalStorageBooksArray.reduce((acc, curr) => {
-//   console.log("groupingByCategory variable")
-//   (acc[curr.category] = acc[curr.category] || []).push(curr);
-//   return acc;
-// }, {});
-// console.log(groupingByCategory)
-
-
 let groupingByCategory 
+
 //Groups books by category and pushes them to an object groupingByCategory
 function createGroupByCategory() {
   groupingByCategory = allLocalStorageBooksArray.reduce((acc, curr) => {
@@ -617,8 +511,6 @@ function createGroupByCategory() {
   console.log(groupingByCategory)
 }
 
-
-
 function checkIfCategoryDropDownExist() {
   console.log("checkIfCategoryDropDownExist called")
   createGroupByCategory();
@@ -628,21 +520,12 @@ function checkIfCategoryDropDownExist() {
   console.log(existingElement2)
    // const elementToRemove = document.getElementById('bookshelfContainer');
   if(!existingElement2) {
-    console.log("catUl does not exist")
-    // console.log("bookCategoryContainer does not exist remove bookshelfContainer")
-    // let elementToRemove = existingElement2;
-    // console.log(`${elementToRemove} is being removed`)
-    // elementToRemove.parentNode.removeChild(elementToRemove);
-    // getAllCategories();
-    
+    console.log("catUl does not exist")    
     createCategoryDropDownList();
     toggleCategoryModalOn();  
   } else {
     console.log("Unordered List already exists")
     toggleCategoryModalOn();
-    // let elementToRemove = existingElement1;
-    // console.log(`${elementToRemove} is being removed`)
-    // elementToRemove.parentNode.removeChild(elementToRemove);
   }
 }
 
@@ -653,23 +536,6 @@ function createCategoryDropDownList() {
   console.log('createCategoryDropDownList was called')
   const parentElement = document.getElementById("categoryListSection");
   const childElement = document.getElementById("catUl")
-  //If Else to check if the UL catUl is already created or not to not duplicate it
-  //UL does exist then do not recreate UL, just create the LI's
-  // if(childElement) {
-  //   console.log("catUl child element exists")
-  //   const categoryDiv = document.getElementById("categoryListSection");
-  //   const categoryUl = document.getElementById("catUl");
-  //   categoryUl.setAttribute("id", "catUl")
-    
-  //   Object.keys(groupedCategoryObj).forEach(key => {
-  //     console.log(`${key}: ${groupedCategoryObj[key]}`);
-  //     const categoryLi = document.createElement("li");
-  //     categoryLi.setAttribute("class", "catLi")
-  //     categoryLi.setAttribute("data-categoryid", groupedCategoryObj[key])
-  //     categoryLi.innerText = key;
-  //     categoryUl.appendChild(categoryLi);
-  //   })
-  // }
   categoryInputandListDiv.appendChild(categoryDiv);
   const categoryUl = document.createElement('ul');
   categoryUl.setAttribute("id", "catUl")
@@ -692,11 +558,8 @@ function createCategoryDropDownList() {
   categoryLiForAll.setAttribute("class", "catLi")
   categoryLiForAll.setAttribute("data-categoryid", "123")
   categoryLiForAll.innerText = "ALL CATEGORIES";
-  categoryUl.appendChild(categoryLiForAll);
-  
+  categoryUl.appendChild(categoryLiForAll);  
 }
-
-
 
 // //click on category to get the id and show the list of books from that category
 categoryList.addEventListener('click', (event) => {
@@ -714,9 +577,7 @@ categoryList.addEventListener('click', (event) => {
     // target.classList.remove('selectedCategory')
     selectedCategory();
     toggleCategoryModalOff();
-
-  }
-  
+  } 
 })
 
 
@@ -728,19 +589,14 @@ function categoryToBookshelf(selectedCategoryText) {
       console.log(value)
       clearBookshelf();
       console.log("populateBookshelf on value called")
-      populateBookshelf(value);  
-      
-      
+      populateBookshelf(value);    
     }else if(selectedCategoryText === "ALL CATEGORIES") {
       console.log("ALL CATEGORIES CLICKED")
       clearBookshelf();
-      populateBookshelf(allLocalStorageBooksArray)
-      
+      populateBookshelf(allLocalStorageBooksArray)  
     }
   })
 }
-
-
 
 //Remove all the LS items in bookshelf to show only categoy items selected from LS
 function removebookshelfItems() {
@@ -817,3 +673,72 @@ function populateBookshelf(arrayToDisplay) {
 console.log(displayBookDataArray)
 
 
+// Sort by heading sortable icons
+// let headingSortCategoryIcon = document.querySelector(".category");
+// console.log(headingSortCategoryIcon)
+
+
+// headingSortCategoryIcon.addEventListener('click', sortByCategoryIcon)
+   
+
+// function sortByCategoryIcon() {
+//   console.log("sortByCategoryIcon called");
+//   displayBookDataArray.sort((a, b) => a.category.localeCompare(b.category));
+//   clearBookshelf();
+//   populateBookshelf(displayBookDataArray); 
+// }
+
+
+
+
+// let headingSortIcons = document.querySelectorAll(".sort-by");
+// console.log(headingSortIcons)
+
+// headingSortIcons.forEach(icon => {
+//   console.log(icon)
+//   console.log(icon.parentElement.innerText.toLowerCase())
+//   let titleOfCategory = icon.parentElement.innerText.toLowerCase()
+//   icon.addEventListener('click', sortByHeadingIcon(titleOfCategory))
+// })
+
+
+// headingSortTitleIcon.addEventListener('click', sortByHeadingIcon(displayBookDataArray, 'title'))
+// headingSortRatingIcon.addEventListener('click', sortByHeadingIcon(displayBookDataArray, 'ratings'))
+// // headingSortCategoryIcon.addEventListener('click', sortByHeadingIcon(displayBookDataArray, 'category'))
+// headingSortAuthorIcon.addEventListener('click', sortByHeadingIcon(displayBookDataArray, 'author'))
+
+
+let headingSortTitleIcon = document.querySelector(".title");
+let headingSortRatingsIcon = document.querySelector(".ratings");
+let headingSortCategoryIcon = document.querySelector(".category");
+console.log(headingSortCategoryIcon)
+let headingSortAuthorIcon = document.querySelector(".author");
+
+
+
+
+headingSortTitleIcon.addEventListener('click', () => {
+  sortByHeadingIcon(displayBookDataArray, 'title');
+});
+
+headingSortRatingsIcon.addEventListener('click', () => {
+  sortByHeadingIcon(displayBookDataArray, 'ratings');
+});
+
+headingSortCategoryIcon.addEventListener('click', () => {
+  sortByHeadingIcon(displayBookDataArray, 'category');
+});
+
+headingSortAuthorIcon.addEventListener('click', () => {
+  sortByHeadingIcon(displayBookDataArray, 'author');
+});
+
+function sortByHeadingIcon(array, property) {
+  console.log("sortByHeadingIcon called")
+  console.log(property)
+  console.log("sortByHeadingIcon called");
+  console.log(property)
+  array.sort((a, b) => a[property].localeCompare(b[property]));
+  clearBookshelf();
+  populateBookshelf(array); 
+}
