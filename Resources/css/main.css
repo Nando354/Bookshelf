@@ -692,7 +692,7 @@ div.seeMoreNotHidden {
   }
   
   .headingCategory {
-    margin-left: 3.9%;
+    margin-left: 5.9%;
   }
   
   .headingAuthor {
@@ -782,6 +782,10 @@ div.seeMoreNotHidden {
 
 /*Good*/
 @media (min-width: 425px) and (max-width: 767px) { 
+  #searchResults {
+    width: 70%;
+  }
+
   .addBookModalForm {
     position: fixed;
     top: 0%;
@@ -790,7 +794,12 @@ div.seeMoreNotHidden {
   }
 
   .headerDiv{
-    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
   }
 
   .myBookShelf {
@@ -815,27 +824,33 @@ div.seeMoreNotHidden {
   }
   
   .headingRating {
-    margin-left: 2%;
+    margin-left: 6%;
+    padding-right: 10px;
   }
   
   .headingCategory {
-    margin-left: 4%;
+    margin-left: 9.5%;
   }
   
   .headingAuthor {
-    margin-left: 4%;
+    margin-left: 10.9%;
   }
 
   .flex-table-head {
     display: flex;
-    width: 115%;
-    gap: 2px;; 
+    width: 120%;
+    gap: 0px;; 
   }
 
   .flex-table {
     display: flex;
-    width: 115%;
-    gap: 0px;
+    width: 120%;
+    gap: 0;
+  }
+
+  /* Make the two buttons wrap */
+  .flex-table.row {
+    flex-wrap: wrap;
   }
 
   div.imgTitle {
@@ -857,36 +872,39 @@ div.seeMoreNotHidden {
     display: inline-flex;
     justify-content: left;
     align-items: center;
-    padding-left: 10px;
+    padding-left: 0px;
     padding-right: 10px;
     width: 20px;
   }
 
   .ratings {
-    padding-left: 10px;
-    padding-right: 2px; 
+    width: 20px;
+    padding-left: 20px;
+    padding-right: 20px;  
   }
 
   .category {
-    padding-left: 10px;
+    padding-left: 20px;
     width: 12%;
     overflow-y: auto;
     max-height: 150px;
   }
 
   .author {
-    padding-left: 12px;
+    padding-left: 30px;
     padding-right: 12px;
     word-wrap: normal;
-    width: 30px;
+    width: 60px;
     overflow-y: auto;
     max-height: 150px;
   }
 
   .bookshelfButtons {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: end;
+    padding-left: 8px;
+    padding-top: 0px;
   }
 
   .seeMoreBtn {
@@ -897,7 +915,8 @@ div.seeMoreNotHidden {
     white-space: nowrap;
     border-radius: 10%;
     word-wrap: normal;
-    padding: 0px 4px 0px 4px;
+    padding: 0px 2px 0px 2px;
+    margin: 0px 5px 0px 0px;
   }
 
   .removeBtn {
@@ -905,8 +924,9 @@ div.seeMoreNotHidden {
     background-color: white;
     color: rgb(20, 140, 238);
     border-color: rgb(20, 140, 238);
-    padding: 0px 8px 0px 8px;
+    padding: 0px 6px 0px 6px;
     border-radius: 10%;
+    margin-left: 5px;
   }
 
   #seeMoreContainer {
@@ -957,6 +977,14 @@ div.seeMoreNotHidden {
     margin-bottom: 20px;
   }
 
+  .myBookShelf {
+    margin-right: 4.5%;
+  }
+
+  .categoryAndButtonDiv {
+    padding-right: 5.5%;
+  }
+
   .flex-row {
     padding: 10px 0px 10px 0px;
     z-index: 0;
@@ -971,16 +999,16 @@ div.seeMoreNotHidden {
   }
   
   .headingRating {
-    margin-left: 2%;
+    margin-left: 6%;
     padding-right: 10px;
   }
   
   .headingCategory {
-    margin-left: 2%;
+    margin-left: 6.5%;
   }
   
   .headingAuthor {
-    margin-left: 4.5%;
+    margin-left: 6.9%;
   }
 
   .flex-table-head {
@@ -1019,9 +1047,9 @@ div.seeMoreNotHidden {
     display: inline-flex;
     justify-content: left;
     align-items: center;
-    padding-left: 10px;
+    padding-left: 0px;
     padding-right: 10px;
-    width: 20px;
+    width: 30px;
   }
 
   .ratings {
@@ -1031,17 +1059,17 @@ div.seeMoreNotHidden {
   }
 
   .category {
-    padding-left: 25px;
+    padding-left: 12px;
     width: 12%;
     overflow-y: auto;
     max-height: 150px;
   }
 
   .author {
-    padding-left: 35px;
+    padding-left: 30px;
     padding-right: 12px;
     word-wrap: normal;
-    width: 30px;
+    width: 60px;
     overflow-y: auto;
     max-height: 150px;
   }
