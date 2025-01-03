@@ -829,7 +829,7 @@ div.seeMoreNotHidden {
   }
   
   .headingCategory {
-    margin-left: 9.5%;
+    margin-left: 7.2%;
   }
   
   .headingAuthor {
@@ -874,29 +874,33 @@ div.seeMoreNotHidden {
     align-items: center;
     padding-left: 0px;
     padding-right: 10px;
-    width: 20px;
+    width: 30px;
+    font-size: 14px;
   }
 
   .ratings {
     width: 20px;
-    padding-left: 20px;
-    padding-right: 20px;  
+    padding-left: 28px;
+    padding-right: 20px; 
+    font-size: 14px; 
   }
 
   .category {
-    padding-left: 20px;
-    width: 12%;
+    padding-left: 3px;
+    width: 20%;
     overflow-y: auto;
     max-height: 150px;
+    font-size: 14px;
   }
 
   .author {
-    padding-left: 30px;
-    padding-right: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
     word-wrap: normal;
-    width: 60px;
+    width: 75px;
     overflow-y: auto;
     max-height: 150px;
+    font-size: 14px;
   }
 
   .bookshelfButtons {
@@ -1004,11 +1008,11 @@ div.seeMoreNotHidden {
   }
   
   .headingCategory {
-    margin-left: 6.5%;
+    margin-left: 5.2%;
   }
   
   .headingAuthor {
-    margin-left: 6.9%;
+    margin-left: 7.9%;
   }
 
   .flex-table-head {
@@ -1050,28 +1054,32 @@ div.seeMoreNotHidden {
     padding-left: 0px;
     padding-right: 10px;
     width: 30px;
+    font-size: 14px;
   }
 
   .ratings {
     width: 20px;
-    padding-left: 20px;
-    padding-right: 20px;  
+    padding-left: 28px;
+    padding-right: 20px; 
+    font-size: 14px; 
   }
 
   .category {
-    padding-left: 12px;
-    width: 12%;
+    padding-left: 3px;
+    width: 20%;
     overflow-y: auto;
     max-height: 150px;
+    font-size: 14px;
   }
 
   .author {
-    padding-left: 30px;
-    padding-right: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
     word-wrap: normal;
-    width: 60px;
+    width: 75px;
     overflow-y: auto;
     max-height: 150px;
+    font-size: 14px;
   }
 
    .bookshelfButtons {
@@ -1173,19 +1181,23 @@ div.seeMoreNotHidden {
     justify-content: center;
     padding-right: 10%;
     padding-left: 3px;
+    font-size: 15px;
   }
   
   .headingRating {
-    margin-left: 6%;
+    margin-left: 4%;
     padding-right: 10px;
+    font-size: 15px;
   }
   
   .headingCategory {
-    margin-left: 6.5%;
+    margin-left: 2.3%;
+    font-size: 15px;
   }
   
   .headingAuthor {
-    margin-left: 5.9%;
+    margin-left: 4.9%;
+    font-size: 15px;
   }
 
   .flex-table-head {
@@ -1227,28 +1239,32 @@ div.seeMoreNotHidden {
     padding-left: 0px;
     padding-right: 10px;
     width: 30px;
+    font-size: 14px;
   }
 
   .ratings {
     width: 20px;
     padding-left: 28px;
-    padding-right: 20px;  
+    padding-right: 20px; 
+    font-size: 14px; 
   }
 
   .category {
     padding-left: 3px;
-    width: 12%;
+    width: 20%;
     overflow-y: auto;
     max-height: 150px;
+    font-size: 14px;
   }
 
   .author {
-    padding-left: 35px;
-    padding-right: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
     word-wrap: normal;
-    width: 40px;
+    width: 75px;
     overflow-y: auto;
     max-height: 150px;
+    font-size: 14px;
   }
 
   .bookshelfButtons {
