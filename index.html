@@ -8,32 +8,33 @@
 </head>
 <body>
   <header>
+    <div class="blueTopSection"></div>
     <div class="headerDiv">
       <h1 class="myBookShelf">My Bookshelf</h1>  
       <div class="categoryAndButtonDiv">
         <div id="categoryInputAndListDiv">
-          <!-- <label class="searchByCategory" for="category-input"></label> -->
           <button required type="select" class="form-control" id="category-button">Browse by Category</button>
-          <div id="categoryListSection" class="categoryHidden">
-          </div>
+          <div id="categoryListSection" class="categoryHidden"></div>
         </div>
         <button id="addBookButtonModal">Add Book</button>
-      </div>
-      
+      </div> 
   </header>
   <div id="bookshelfHeaderContainer">
-    <div class="flex-table header">
+    <div class="flex-table-head header">
       <div class="flex-row headingTitle">Title
-        <a href="#" class="sort-by title"></a>
+        <a href="#" class="sort-by titleIcon"></a>
       </div>
       <div class="flex-row headingRating">Ratings
-        <a href="#" class="sort-by ratings"></a>
+        <a href="#" class="sort-by ratingsIcon"></a>
       </div>
       <div class="flex-row headingCategory">Category
-        <a href="#" class="sort-by category"></a>
+        <a href="#" class="sort-by categoryIcon"></a>
       </div>
       <div class="flex-row headingAuthor">Author
-        <a href="#" class="sort-by author"></a>
+        <a href="#" class="sort-by authorIcon"></a>
+      </div>
+      <div class="flex-row headingBlank">
+        <!-- space holder -->
       </div>
     </div>
     <div id="bookshelfContainer"></div>

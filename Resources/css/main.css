@@ -1,26 +1,133 @@
-header {
-  margin-left: 5%;
+html {
+  height: 100vh;
+  margin: 0;
 }
 
+body {
+  display: flex;
+  justify-content: start;
+  height: 100vh;
+  box-sizing: border-box;
+  flex-direction: column;
+  margin: 0;  
+}
+
+.blueTopSection {
+  background-color: rgb(20, 140, 238);
+  height: 60px;
+  margin: 0px;
+  padding: 0px;
+}
+
+/*Top Header Section*/
 .headerDiv {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  margin-right: 5%;
+  align-items: center;
+}
+
+.myBookShelf {
+  margin-right: 10%;
+  padding-left: 8px;
 }
 
 .categoryAndButtonDiv {
   display: flex;
   flex-direction: row;
-  width: 250px;
+  align-items: end;
+  padding-right: 10.2%;
+}
+
+.headingTitle {
+  display: flex;
+  width: 200px;
+  flex-direction: row;
+  justify-content: left;
+  padding-right: 200px;
+}
+
+.headingRating {
+  margin-left: 12%;
+}
+
+.headingCategory {
+  margin-left: 6%;
+}
+
+.headingAuthor {
+  margin-left: 10.5%;
+}
+
+#bookshelfHeaderContainer {
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  margin-left: 35px;
+  margin-right: 35px;
+}
+
+#bookshelfContainer {
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  width: 100%;
+}
+
+/* bookshelf section */
+.row {
+  align-items: center;
+  justify-content: space-evenly;
+  background-color:rgb(235, 245, 249);
+  padding: 10px 0px 10px 0px;
+  margin-bottom: 15px;
+  z-index: 1;
+}
+
+/* header section */
+.flex-row {
+  padding: 10px 5px 10px 0px;
+  z-index: 0;
+}
+
+/* NEW bookshelf area*/
+.flex-table-head {
+  display: flex;
+  width: 100%;
+  gap: 10%; 
+}
+
+/* NEW bookshelf area*/
+.flex-table {
+  display: flex;
+  width: 100%;
+  gap: 10%; 
+}
+
+.bookshelfButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
 }
 
 #category-input {
   width: 155px;
   border-radius: 15px;
   border-width: 1px;
-  border-color: grey;
+  background-color: white;
+}
+
+#category-button {
+  width: 155px;
+  border-radius: 15px;
+  border-width: 1px;
+  border-color: lightgray;
+  background-color: white;
+  font-weight: 100;
+  height: 25px;
 }
 
 #categoryInputAndListDiv {
@@ -41,13 +148,12 @@ header {
   padding: 5px;
   position: absolute;
   overflow: auto;
-  /* display: hidden; */
-  /* box-shadow: 5px 8px 5px lightgrey; */
 }
 
 .categoryHidden {
   display: none;
 }
+
 div.categoryNotHidden {
   display: block;
 }
@@ -60,45 +166,15 @@ div.categoryNotHidden {
 }
 
 #addBookButtonModal {
-  width: 32%;
   height: 25%;
   word-wrap: normal;
   margin-left: 10px;
+  margin-right: 10px;
+  color: white;
+  background-color: rgb(20, 140, 238);
+  border-color: rgb(20, 140, 238);
+  border-radius: 10%;
 }
-.header {
-  display: grid;
-  /* grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr; */
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  width: 90%;
-  margin-bottom: 10px;
-  padding-top: 10px;
-  margin-left: 5%;
-}
-
-.headingTitle {
-  padding-left: 10%;
-}
-
-.headingRating {
-  margin-left: 10%;
-}
-
-#bookshelfHeaderContainer {
-  z-index: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-#bookshelfContainer {
-  z-index: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 
 #bookCategoryContainer {
   z-index: 0;
@@ -108,70 +184,72 @@ div.categoryNotHidden {
   align-items: center;
 }
 
-.row {
-  display: grid;
-  align-items: center;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  background-color:rgb(235, 245, 249);
-  width: 90%;
-  padding: 10px 0px 10px 0px;
-  margin-bottom: 15px;
-  z-index: 1;
-}
-
-.flex-row {
-  display: flex;
-  /* padding-right: 10px; */
-  padding: 10px 5px 10px 0px;
-  z-index: 1;
-}
-
 div.imgTitle {
-  display: inline-flex;
+  display: flex;
+  flex-direction: row;
   justify-content: left;
   align-items: center;
 }
 
 .bookImage {
-  display: inline-flex;
   justify-content: center;
   align-items: center;
   height: 90px;
   width: 60px;
-  padding-left: 25px;
+  padding-left: 12px;
 }
 
 .bookTitle {
   display: inline-flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
-  padding-left: 15px;
+  padding-left: 35px;
+  padding-right: 60px;
+  width: 200px;
+  word-wrap: break-word;
 }
 
-*.ratings {
-  padding-left: 20px;
-  width: 20%;
+.ratings {
+  padding-right: 128px;  
 }
 
-#seeMoreBtn {
+.category {
+  padding-left: 10px;
+  width: 12%;
+  word-wrap: break-word;
+  width: 10%;
+}
+
+.author {
+  padding-left: 12px;
+  word-wrap: break-word;
+  width: 10%;
+}
+
+.seeMoreBtn {
   margin-bottom: 5px;
-  background-color: rgb(63, 91, 247);
+  background-color: rgb(20, 140, 238);
   color: white;
+  border-color: rgb(20, 140, 238);
+  white-space: nowrap;
+  border-radius: 10%; 
 }
 
-#removeBtn {
+.removeBtn {
   margin-top: 5px;
-  border-color:rgb(63, 91, 247);
-  color: rgb(63, 91, 247);
+  background-color: white;
+  color: rgb(20, 140, 238);
+  border-color: rgb(20, 140, 238);
   padding: 0px 10px 0px 10px;
+  border-radius: 10%;
 }
 
 .addBookModalForm {
-  display: flex;
   position: fixed;
-  left: 20%;
-  right: 30%;
-  bottom: 20%;
+  top: 0%;
+  left: 40%;
+  transform: translate(-70, -30%);
+  display: flex;
   z-index: 999;
   flex-direction: column;
   justify-content: space-around;
@@ -188,6 +266,7 @@ div.imgTitle {
 .hidden {
   display: none;
 }
+
 div.none {
   display: block;
 }
@@ -199,7 +278,6 @@ div.none {
   border: 0;
   background: none;
   width: 10px;
-  
 }
 
 .innerModalSection {
@@ -215,6 +293,7 @@ div.none {
   margin-top: 15px;
   margin-bottom: 5px;
 }
+
 /* title search */
 #title-input {
   border-radius: 10px;
@@ -222,25 +301,17 @@ div.none {
   width: 80%;
   height: 8%;
   margin-top: 8px;
-
-  /* display: inline; */
 }
-
-/* .searchField {
-  display: inline;
-} */
 
 .modalSearchBtn {
   width: 60px;
   height: 20px;
   margin-left: 10px;
-  background-color: rgb(63, 91, 247);
+  background-color: rgb(20, 140, 238);
   color: white;
   border: none;
   border-radius: 10%;
-  /* position: absolute; */
   z-index: 0; 
-  /* display: inline;  */
 }
 
 .searchHidden {
@@ -258,9 +329,7 @@ div.none {
   padding: 5px;
   position: fixed;
   overflow: auto;
-  /* display: none; */
 }
-
 
 ul {
   Padding-left: 10px;
@@ -273,8 +342,6 @@ ul {
   padding-left: 0px;
 }
 
-
-
 .selected {
   background: rgb(98, 149, 250);
 }
@@ -283,7 +350,6 @@ ul {
   background: rgb(98, 149, 250);
 }
 
-
 /* rating entry */
 #rating-input {
   border-radius: 5px;
@@ -291,7 +357,6 @@ ul {
   width: 25%;
   height: 10%;
   margin-top: 8px;
-
 }
 
 #modalButton {
@@ -299,20 +364,16 @@ ul {
   height: 20px;
   margin-top: 18px;
   margin-left: 70%;
-  background-color: rgb(63, 91, 247);
+  background-color: rgb(20, 140, 238);
   color: white;
   border: none;
   border-radius: 10%;
-  /* position: absolute; */
-  /* z-index: -1; */
 }
-
 
 /* LOADING SPINNER */
 .loadSpinner {
   display: inline-block;
-  padding-left: 10px;
-  
+  padding-left: 10px; 
 }
 
 #loadingSpinner {
@@ -329,7 +390,6 @@ ul {
 /* SORT ARROWS */
 a,
 a { 
-	display: block;
 	width: 15%;
 }
 a.sort-by { 
@@ -340,12 +400,11 @@ a.sort-by:before,
 a.sort-by:after {
 	border: 4px solid transparent;
 	content: "";
-	display: block;
 	height: 0;
-	right: 5px;
 	top: 50%;
 	position: absolute;
 	width: 0;
+  margin-left: 5px;
 }
 a.sort-by:before {
 	border-bottom-color: #666;
@@ -354,6 +413,43 @@ a.sort-by:before {
 a.sort-by:after {
 	border-top-color: #b2abab;
 	margin-top: 1px;
+}
+
+#seeMoreContainer {
+  margin-top: 25px;
+  font-size: 13px;
+  width: 17%;
+  height: auto;
+  background-color: rgb(254, 255, 255);
+  border: 2px lightgrey solid;
+  border-radius: 5px;
+  z-index: 2;
+  padding: 5px;
+  position: absolute;
+  overflow: auto;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.seeMoreData{
+  margin: 0px 10px 10px 10px;
+}
+
+#btnCloseSeeMore {
+  margin-left: 95%;
+  font-size: 15px;
+  padding: 0;
+  border: 0;
+  background: none;
+  width: 10px;
+}
+
+.seeMoreHidden {
+  display: none;
+}
+
+div.seeMoreNotHidden {
+  display: block;
 }
 
 @-webkit-keyframes spin {
@@ -366,28 +462,806 @@ a.sort-by:after {
   100% { transform: rotate(360deg); }
 }
 
-@media (min-width: 1024px) and (max-width: 2560px) {
-  
-  /* CSS */
-  .headingRating {
-    margin-left: 3%;
-  }
-}
 
-@media (min-width: 320px) and (max-width: 1020px) {
-  
-  /* CSS */
-  .headingRating {
-    margin-left: 35%;
+@media (min-width: 2560px) and (max-width: 3000px) {
+  .categoryAndButtonDiv {
+    padding-right: 3.9%;
   }
-
+  
+  .headingTitle {
+    display: flex;
+    width: 200px;
+    flex-direction: row;
+    justify-content: left;
+    padding-right: 275px;
+  }
+  
+  .headingRating {
+    margin-left: 2%;
+  }
+  
   .headingCategory {
-    margin-left: 20%
+    margin-left: 6.9%;
+  }
+  
+  .headingAuthor {
+    margin-left: 13%;
+  }
+}
+
+@media (min-width: 1920px) and (max-width: 2559px) {
+  .categoryAndButtonDiv {
+    padding-right: 8.1%;
+  }
+  
+  .headingTitle { 
+    display: flex;
+    width: 100px;
+    flex-direction: row;
+    justify-content: left;
+    padding-right: 275px; 
+  }
+  
+  .headingRating {  
+    margin-left: 13.4%;
+  }
+  
+  .headingCategory {
+    margin-left: 12.2%;
+  }
+  
+  .headingAuthor {
+    margin-left: 14.6%;
   }
 
-  .headingAuthor {
-    margin-left: 20%;
+  .flex-table-head {
+    display: flex;
+    width: 100%;
+    gap: 1%; 
+  }
+
+  .flex-table {
+    display: flex;
+    width: 100%;
+    gap: 2%;
   }
 }
 
 
+@media (min-width: 1440px) and (max-width: 1919px) {
+  .categoryAndButtonDiv {
+    padding-right: 6.7%;
+  }
+  
+  .headingTitle { 
+    display: flex;
+    width: 100px;
+    flex-direction: row;
+    justify-content: left;
+    padding-right: 275px;  
+  }
+  
+  .headingRating {  
+    margin-left: 9.7%;
+  }
+  
+  .headingCategory { 
+    margin-left: 12.1%;
+  }
+  
+  .headingAuthor {
+    margin-left: 13.8%;
+  }
+
+  .flex-table-head {
+    display: flex; 
+    width: 100%;
+    gap: 1%; 
+  }
+
+  .flex-table {
+    display: flex;
+    width: 100%;
+    gap: 2%;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .categoryAndButtonDiv {
+    padding-right: 5.4%;
+  }
+  
+  .headingTitle {
+    padding-right: 90px;  
+  }
+  
+  .headingRating {
+    margin-left: 1%;
+  }
+  
+  .headingCategory {
+    margin-left: 7.8%;
+  }
+  
+  .headingAuthor {
+    margin-left: 14.1%;
+  }
+
+  .flex-table-head {
+    width: 100%;
+    gap: 1%; 
+  }
+
+  .flex-table {
+    width: 100%;
+  }
+
+  div.imgTitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+  }
+
+  .bookImage {
+    justify-content: center;
+    align-items: center;
+    height: 90px;
+    width: 60px;
+    padding-left: 5px;
+    margin-left: 25px;
+  }
+
+  .bookTitle {
+    display: inline-flex;
+    justify-content: left;
+    align-items: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    width: 60px;
+  }
+
+  .ratings {
+    padding-right: 30px;  
+  }
+
+  .category {
+    padding-left: 10px;
+    width: 12%;
+  }
+
+  .author {
+    padding-left: 12px;
+  }
+
+  .seeMoreBtn {
+    margin-bottom: 5px;
+    background-color: rgb(20, 140, 238);
+    color: white;
+    border-color: rgb(20, 140, 238);
+    white-space: nowrap;
+    border-radius: 10%; 
+    margin-right: 20px;
+  }
+
+  .removeBtn {
+    margin-top: 5px;
+    background-color: white;
+    color: rgb(20, 140, 238);
+    border-color: rgb(20, 140, 238);
+    padding: 0px 10px 0px 10px;
+    border-radius: 10%;
+    margin-right:20px;
+  }
+  #seeMoreContainer {
+    width: 27%;
+    height: auto;
+    overflow-y: auto;
+    max-height: 400px;
+  }
+}
+
+/*Good*/
+ @media (min-width: 768px) and (max-width: 1023px) {
+  .addBookModalForm {
+    position: fixed;
+    top: 0%;
+    left: 30%;
+    transform: translate(-70, -30%);
+  }
+
+  .categoryAndButtonDiv {
+    padding-right: 7.5%;
+  }
+
+  .flex-row {
+    padding: 10px 0px 10px 0px;
+    z-index: 0;
+  }
+
+  .headingTitle {
+    display: flex;
+    width: 10%;
+    flex-direction: row;
+    justify-content: left;
+    padding-right: 10%;
+  }
+  
+  .headingRating {
+    margin-left: 15%;
+  }
+  
+  .headingCategory {
+    margin-left: 3.9%;
+  }
+  
+  .headingAuthor {
+    margin-left: 9.3%;
+  }
+
+  .flex-table-head {
+    display: flex;
+    width: 100%;
+    gap: 2px;; 
+  }
+
+  .flex-table {
+    display: flex;
+    width: 100%;
+    gap: 0px;
+  }
+
+  div.imgTitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+  }
+
+  .bookImage {
+    justify-content: center;
+    align-items: center;
+    height: 90px;
+    width: 60px;
+    padding-left: 5px;
+  }
+
+  .bookTitle {
+    display: inline-flex;
+    justify-content: left;
+    align-items: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    width: 60px;
+  }
+
+  .ratings {
+    padding-right: 30px;  
+  }
+
+  .category {
+    padding-left: 10px;
+    width: 12%;
+  }
+
+  .author {
+    padding-left: 12px;
+  }
+
+  .seeMoreBtn {
+    margin-bottom: 5px;
+    background-color: rgb(20, 140, 238);
+    color: white;
+    border-color: rgb(20, 140, 238);
+    white-space: nowrap;
+    border-radius: 10%; 
+  }
+
+  .removeBtn {
+    margin-top: 5px;
+    background-color: white;
+    color: rgb(20, 140, 238);
+    border-color: rgb(20, 140, 238);
+    padding: 0px 10px 0px 10px;
+    border-radius: 10%;
+  }
+
+  #seeMoreContainer {
+    position: fixed;
+    top: 20%;
+    left: 30%;
+    transform: translate(-70, -30%);
+    width: 47%;
+    z-index: 2;
+    overflow-y: auto;
+    max-height: 400px;
+  }
+}
+
+
+
+/*Good*/
+@media (min-width: 425px) and (max-width: 767px) { 
+  .addBookModalForm {
+    position: fixed;
+    top: 0%;
+    left: 10%;
+    transform: translate(-70, -30%);
+  }
+
+  .headerDiv{
+    justify-content: center;
+  }
+
+  .myBookShelf {
+    margin-right: 4.5%;
+  }
+
+  .categoryAndButtonDiv {
+    padding-right: 5.5%;
+  }
+
+  .flex-row {
+    padding: 10px 0px 10px 0px;
+    z-index: 0;
+  }
+
+  .headingTitle {
+    display: flex;
+    width: 10%;
+    flex-direction: row;
+    justify-content: center;
+    padding-right: 10%; 
+  }
+  
+  .headingRating {
+    margin-left: 2%;
+  }
+  
+  .headingCategory {
+    margin-left: 4%;
+  }
+  
+  .headingAuthor {
+    margin-left: 4%;
+  }
+
+  .flex-table-head {
+    display: flex;
+    width: 115%;
+    gap: 2px;; 
+  }
+
+  .flex-table {
+    display: flex;
+    width: 115%;
+    gap: 0px;
+  }
+
+  div.imgTitle {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: left;
+    align-items: center;
+  }
+
+  .bookImage {
+    justify-content: center;
+    align-items: center;
+    height: 90px;
+    width: 60px;
+    padding-left: 0px;
+  }
+
+  .bookTitle {
+    display: inline-flex;
+    justify-content: left;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 20px;
+  }
+
+  .ratings {
+    padding-left: 10px;
+    padding-right: 2px; 
+  }
+
+  .category {
+    padding-left: 10px;
+    width: 12%;
+    overflow-y: auto;
+    max-height: 150px;
+  }
+
+  .author {
+    padding-left: 12px;
+    padding-right: 12px;
+    word-wrap: normal;
+    width: 30px;
+    overflow-y: auto;
+    max-height: 150px;
+  }
+
+  .bookshelfButtons {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+  }
+
+  .seeMoreBtn {
+    margin-bottom: 5px;
+    background-color: rgb(20, 140, 238);
+    color: white;
+    border-color: rgb(20, 140, 238);
+    white-space: nowrap;
+    border-radius: 10%;
+    word-wrap: normal;
+    padding: 0px 4px 0px 4px;
+  }
+
+  .removeBtn {
+    margin-top: 5px;
+    background-color: white;
+    color: rgb(20, 140, 238);
+    border-color: rgb(20, 140, 238);
+    padding: 0px 8px 0px 8px;
+    border-radius: 10%;
+  }
+
+  #seeMoreContainer {
+    position: fixed;
+    top: 20%;
+    left: 10%;
+    transform: translate(-70, -30%);
+    width: 77%;
+    z-index: 2;
+    overflow-y: auto;
+    max-height: 400px;
+  }
+}
+
+@media (min-width: 375px) and (max-width: 424px) { 
+  #searchResults {
+    width: 70%;
+  }
+
+  .addBookModalForm {
+    position: fixed;
+    top: 0%;
+    left: 2%;
+    transform: translate(-70, -30%);
+    width: 80%;
+  }
+
+  .innerModalSection {
+    background-color: rgb(235, 245, 249);
+    width: 280px;
+    height: 280px;
+    padding: 10px;
+  }
+
+  .addBookModalForm {
+    position: fixed;
+    top: 0%;
+    left: 5%;
+    transform: translate(-70, -30%);
+  }
+
+  .headerDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .flex-row {
+    padding: 10px 0px 10px 0px;
+    z-index: 0;
+  }
+
+  .headingTitle {
+    display: flex;
+    width: 10%;
+    flex-direction: row;
+    justify-content: left;
+    padding-right: 10%;
+  }
+  
+  .headingRating {
+    margin-left: 2%;
+    padding-right: 10px;
+  }
+  
+  .headingCategory {
+    margin-left: 2%;
+  }
+  
+  .headingAuthor {
+    margin-left: 4.5%;
+  }
+
+  .flex-table-head {
+    display: flex;
+    width: 120%;
+    gap: 0; 
+  }
+
+  .flex-table {
+    display: flex;
+    width: 120%;
+    gap: 0;
+  }
+
+  /* Make the two buttons wrap */
+  .flex-table.row {
+    flex-wrap: wrap;
+  }
+
+  div.imgTitle {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: left;
+    align-items: center;
+  }
+
+  .bookImage {
+    justify-content: center;
+    align-items: center;
+    height: 90px;
+    width: 60px;
+    padding-left: 0px;
+  }
+
+  .bookTitle {
+    display: inline-flex;
+    justify-content: left;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 20px;
+  }
+
+  .ratings {
+    width: 20px;
+    padding-left: 20px;
+    padding-right: 20px;  
+  }
+
+  .category {
+    padding-left: 25px;
+    width: 12%;
+    overflow-y: auto;
+    max-height: 150px;
+  }
+
+  .author {
+    padding-left: 35px;
+    padding-right: 12px;
+    word-wrap: normal;
+    width: 30px;
+    overflow-y: auto;
+    max-height: 150px;
+  }
+
+   .bookshelfButtons {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    padding-left: 8px;
+    padding-top: 0px;
+  }
+
+  .seeMoreBtn {
+    margin-bottom: 5px;
+    background-color: rgb(20, 140, 238);
+    color: white;
+    border-color: rgb(20, 140, 238);
+    white-space: nowrap;
+    border-radius: 10%;
+    word-wrap: normal;
+    padding: 0px 2px 0px 2px;
+    margin: 0px 5px 0px 0px;
+  }
+
+  .removeBtn {
+    margin-top: 5px;
+    background-color: white;
+    color: rgb(20, 140, 238);
+    border-color: rgb(20, 140, 238);
+    padding: 0px 6px 0px 6px;
+    border-radius: 10%;
+    margin-left: 5px;
+    
+  }
+
+  #seeMoreContainer {
+    position: fixed;
+    top: 20%;
+    left: 10%;
+    transform: translate(-70, -30%);
+    width: 77%;
+    z-index: 2;
+    overflow-y: auto;
+    max-height: 400px;
+  }
+} 
+
+@media (min-width: 320px) and (max-width: 374px) {
+  #searchResults {
+    width: 70%;
+  }
+
+  .addBookModalForm {
+    position: fixed;
+    top: 0%;
+    left: 3%;
+    transform: translate(-70, -30%);
+    width: 80%;
+  }
+
+  .innerModalSection {
+    background-color: rgb(235, 245, 249);
+    width: 240px;
+    height: 280px;
+    padding: 10px;
+  }
+  
+  .headerDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  #addBookButtonModal {
+    margin-right: 0px;
+  }
+
+  .myBookShelf {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0;
+    padding-left: 0;
+  }
+  .categoryAndButtonDiv {
+    padding-left: 35px;
+  }
+
+  .flex-row {
+    padding: 10px 0px 10px 0px;
+    z-index: 0;
+  }
+
+  .headingTitle {
+    display: flex;
+    width: 10%;
+    flex-direction: row;
+    justify-content: center;
+    padding-right: 10%;
+    padding-left: 3px;
+  }
+  
+  .headingRating {
+    margin-left: 6%;
+    padding-right: 10px;
+  }
+  
+  .headingCategory {
+    margin-left: 6.5%;
+  }
+  
+  .headingAuthor {
+    margin-left: 5.9%;
+  }
+
+  .flex-table-head {
+    display: flex;
+    width: 120%;
+    gap: 0; 
+  }
+
+  .flex-table {
+    display: flex;
+    width: 120%;
+    gap: 0;
+  }
+
+  /* Make the two buttons wrap */
+  .flex-table.row {
+    flex-wrap: wrap;
+  }
+
+  div.imgTitle {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: left;
+    align-items: center;
+  }
+
+  .bookImage {
+    justify-content: center;
+    align-items: center;
+    height: 90px;
+    width: 60px;
+    padding-left: 0px;
+  }
+
+  .bookTitle {
+    display: inline-flex;
+    justify-content: left;
+    align-items: center;
+    padding-left: 0px;
+    padding-right: 10px;
+    width: 30px;
+  }
+
+  .ratings {
+    width: 20px;
+    padding-left: 28px;
+    padding-right: 20px;  
+  }
+
+  .category {
+    padding-left: 3px;
+    width: 12%;
+    overflow-y: auto;
+    max-height: 150px;
+  }
+
+  .author {
+    padding-left: 35px;
+    padding-right: 12px;
+    word-wrap: normal;
+    width: 40px;
+    overflow-y: auto;
+    max-height: 150px;
+  }
+
+  .bookshelfButtons {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    padding-left: 8px;
+    padding-top: 0px;
+  }
+
+  .seeMoreBtn {
+    margin-bottom: 5px;
+    background-color: rgb(20, 140, 238);
+    color: white;
+    border-color: rgb(20, 140, 238);
+    white-space: nowrap;
+    border-radius: 10%;
+    word-wrap: normal;
+    padding: 0px 2px 0px 2px;
+    margin: 0px 5px 0px 0px;
+  }
+
+  .removeBtn {
+    margin-top: 5px;
+    background-color: white;
+    color: rgb(20, 140, 238);
+    border-color: rgb(20, 140, 238);
+    padding: 0px 6px 0px 6px;
+    border-radius: 10%;
+    margin-left: 5px;
+    
+  }
+
+  #seeMoreContainer {
+    position: fixed;
+    top: 20%;
+    left: 9%;
+    transform: translate(-70, -30%);
+    width: 77%;
+    z-index: 2;
+    overflow-y: auto;
+    max-height: 400px;
+  }
+} 

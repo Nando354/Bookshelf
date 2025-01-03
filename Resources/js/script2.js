@@ -18,9 +18,10 @@ const categoryInputandListDiv = document.getElementById('categoryInputAndListDiv
 const categoryList = document.getElementById('categoryListSection')
 const bookshelfHeaderContainer = document.getElementById('bookshelfHeaderContainer')
 const categoryHidden = document.querySelector(".categoryHidden")
-const mainBookshelfContainer = document.getElementById("bookshelfContainer");
-const categoryDiv = document.getElementById("categoryListSection");
+const mainBookshelfContainer = document.getElementById("bookshelfContainer")
+const categoryDiv = document.getElementById("categoryListSection")
 console.log(mainBookshelfContainer)
+
 // let listItemForContainer
 let categoryAllArray = [];
 let groupedCategoryObj = {};
@@ -30,12 +31,24 @@ let allLocalStorageBooksArray = [];
 console.log(allLocalStorageBooksArray)
 let displayBookDataArray = [];
 
-
 //on load call function to populate bookshelves on load
 window.addEventListener('load', () => {
   console.log("window load called")
-  // renderBooksToPage();
   storeLocalStorageItemsToArray();
+  //See More button accessed after its creation or being fully loaded in the dom
+  const seeMoreButtons = document.querySelectorAll('.seeMoreBtn');
+  //Add an eventListener to each SeeMore button in the book list pass the id to seeMoreData function which creates the modal
+  seeMoreButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      console.log("seeMoreButton Clicked")
+      console.log(e.target)
+      console.log(e.target.parentElement.parentElement.parentElement)
+      console.log(e.target.parentElement.parentElement.parentElement.children[0].children[1].dataset.titleId)
+      let selectedSeeMoreTitleId = e.target.parentElement.parentElement.parentElement.children[0].children[1].dataset.titleId;
+      console.log("call function to create the see more button window with data")
+      seeMoreData(selectedSeeMoreTitleId);
+    });
+  });  
 })
 
 //refresh page
@@ -57,6 +70,7 @@ function toggleModalOn() {
   modal.classList.remove("hidden")
   modal.classList.add("none")
 }
+
 //Event Listeners for Add Book Modal
 addBookButtonElement.addEventListener("click", toggleModalOn);
 modalCloseBtn.addEventListener("click", toggleModalOff);
@@ -130,6 +144,11 @@ function createListForSearch(doc, index){
   li.setAttribute("data-title", doc.title)
   li.setAttribute("data-author", doc.author_name)
   li.setAttribute("data-category", attributeForCategory(doc))
+  //create attributes to store data for See More Button
+  li.setAttribute("data-publisher", doc.publisher)
+  li.setAttribute("data-publishYear", doc.publish_year)
+  li.setAttribute("data-ratingsAverage", doc.ratings_average)
+  li.setAttribute("data-firstSentence", doc.first_sentence)
   unorderedList.appendChild(li);
 }
 
@@ -236,7 +255,11 @@ function createBookObject(selectedTitleKey) {
           image: `${li.dataset.image}`,
           title: `${li.dataset.title}`,
           author: `${li.dataset.author}`,
-          category: `${li.dataset.category}`
+          category: `${li.dataset.category}`,
+          publisher: `${li.dataset.publisher}`,
+          publishYear: `${li.dataset.publishYear}`,
+          ratingsAverage: `${li.dataset.ratingsAverage}`,
+          firstSentence: `${li.dataset.firstSentence}`
        }
       addBookObj.push(newObject)
     }
@@ -350,13 +373,18 @@ function validateForm() {
   if(titleInputValue === '' || ratingInputValue === '') {
     alert('Please fill in all fields.')
     return false;
-  }
-    return true;
+  } 
+  return true;
 }
 
 //Rating is saved to LS anb temporary addBookObj is cleared
 function saveRatings() {
   console.log("saveRatings is called")
+  //alert if rating is not a value 1 - 5
+  if(isNaN(ratingInput.value) || ratingInput.value < 1 || ratingInput.value > 5) {
+    alert('Pleae enter a rating value from 1 - 5 only.')
+    return false;
+  } 
   const newId = addBookObj[`${addBookObj.length}` - 1].id;
   const ratingInputNumber = ratingInput.value;
   addBookObj[`${addBookObj.length}` - 1].ratings = ratingInputNumber
@@ -418,13 +446,13 @@ function updateListItemForContainerArray(arrayToUpdate) {
       bookshelfDivRow.appendChild(authorDiv);
 
       const buttonsDiv = document.createElement("div");
-      buttonsDiv.setAttribute("class", "flex-row-buttons");
+      buttonsDiv.setAttribute("class", "flex-row bookshelfButtons");
       bookshelfDivRow.appendChild(buttonsDiv);
 
       const seeMoreDiv = document.createElement("div");
       seeMoreDiv.setAttribute("class", "flex-row");
       const seeMoreBtn = document.createElement("button");
-      seeMoreBtn.setAttribute("id", "seeMoreBtn");
+      seeMoreBtn.setAttribute("class", "seeMoreBtn");
       seeMoreBtn.textContent = 'See more';
       buttonsDiv.appendChild(seeMoreDiv);
       seeMoreDiv.appendChild(seeMoreBtn);
@@ -432,7 +460,7 @@ function updateListItemForContainerArray(arrayToUpdate) {
       const removeButtonDiv = document.createElement("div");
       removeButtonDiv.setAttribute("class", "flex-row");
       const removeBtn = document.createElement("button");
-      removeBtn.setAttribute("id", "removeBtn");
+      removeBtn.setAttribute("class", "removeBtn");
       removeBtn.textContent = 'Remove';
       //Have to add the eventListener before button is added to dom
       removeBtn.addEventListener("click", (e) => {
@@ -497,7 +525,6 @@ function getAllDataLocalStorage() {
 
 // categoryButton.addEventListener('click', getAllCategories)
 categoryButton.addEventListener('click', checkIfCategoryDropDownExist)
-
 let groupingByCategory 
 
 //Groups books by category and pushes them to an object groupingByCategory
@@ -518,7 +545,7 @@ function checkIfCategoryDropDownExist() {
   existingElement1 = document.getElementById('categoryListSection');
   existingElement2 = document.getElementById('catUl')
   console.log(existingElement2)
-   // const elementToRemove = document.getElementById('bookshelfContainer');
+   
   if(!existingElement2) {
     console.log("catUl does not exist")    
     createCategoryDropDownList();
@@ -528,7 +555,6 @@ function checkIfCategoryDropDownExist() {
     toggleCategoryModalOn();
   }
 }
-
 
 //Create the dropdown list for categories with only one of each category
 function createCategoryDropDownList() {
@@ -579,7 +605,6 @@ categoryList.addEventListener('click', (event) => {
     toggleCategoryModalOff();
   } 
 })
-
 
 function categoryToBookshelf(selectedCategoryText) {
   console.log(selectedCategoryText)
@@ -649,7 +674,6 @@ function selectedCategory() {
       item.classList.add('selectedCategory')
     });
   });
-
 }
 
 //Create array to store books that will display in bookshelf
@@ -659,66 +683,26 @@ function populateBookshelf(arrayToDisplay) {
   displayBookDataArray = displayBookDataArray = [];
   //loops through each array and populates array that will display
   arrayToDisplay.forEach(item => {
-    console.log(item)
+    // console.log(item)
     displayBookDataArray.push(item)
   })
-  // console.log(listItemForContainer)
-  console.log(displayBookDataArray)
-  console.log(updateListItemForContainerArray(displayBookDataArray));
-
-  
+  displayBookDataArray
+  updateListItemForContainerArray(displayBookDataArray);
   return displayBookDataArray;
 }
 
-console.log(displayBookDataArray)
-
-
-// Sort by heading sortable icons
-// let headingSortCategoryIcon = document.querySelector(".category");
-// console.log(headingSortCategoryIcon)
-
-
-// headingSortCategoryIcon.addEventListener('click', sortByCategoryIcon)
-   
-
-// function sortByCategoryIcon() {
-//   console.log("sortByCategoryIcon called");
-//   displayBookDataArray.sort((a, b) => a.category.localeCompare(b.category));
-//   clearBookshelf();
-//   populateBookshelf(displayBookDataArray); 
-// }
-
-
-
-
-// let headingSortIcons = document.querySelectorAll(".sort-by");
-// console.log(headingSortIcons)
-
-// headingSortIcons.forEach(icon => {
-//   console.log(icon)
-//   console.log(icon.parentElement.innerText.toLowerCase())
-//   let titleOfCategory = icon.parentElement.innerText.toLowerCase()
-//   icon.addEventListener('click', sortByHeadingIcon(titleOfCategory))
-// })
-
-
-// headingSortTitleIcon.addEventListener('click', sortByHeadingIcon(displayBookDataArray, 'title'))
-// headingSortRatingIcon.addEventListener('click', sortByHeadingIcon(displayBookDataArray, 'ratings'))
-// // headingSortCategoryIcon.addEventListener('click', sortByHeadingIcon(displayBookDataArray, 'category'))
-// headingSortAuthorIcon.addEventListener('click', sortByHeadingIcon(displayBookDataArray, 'author'))
-
-
-let headingSortTitleIcon = document.querySelector(".title");
-let headingSortRatingsIcon = document.querySelector(".ratings");
-let headingSortCategoryIcon = document.querySelector(".category");
+let headingSortTitleIcon = document.querySelector(".titleIcon");
+console.log(headingSortTitleIcon)
+let headingSortRatingsIcon = document.querySelector(".ratingsIcon");
+console.log(headingSortRatingsIcon)
+let headingSortCategoryIcon = document.querySelector(".categoryIcon");
 console.log(headingSortCategoryIcon)
-let headingSortAuthorIcon = document.querySelector(".author");
-
-
-
+let headingSortAuthorIcon = document.querySelector(".authorIcon");
+console.log(headingSortAuthorIcon)
 
 headingSortTitleIcon.addEventListener('click', () => {
   sortByHeadingIcon(displayBookDataArray, 'title');
+  console.log("title icon clicked for sorting")
 });
 
 headingSortRatingsIcon.addEventListener('click', () => {
@@ -742,3 +726,51 @@ function sortByHeadingIcon(array, property) {
   clearBookshelf();
   populateBookshelf(array); 
 }
+
+//Add book and ratings modal off
+function toggleSeeMoreModalOff() {
+  console.log("seeMore button off")
+  // mainBookshelfContainer.removeChild(mainBookshelfContainer.lastChild)
+  let seeMoreContainer = document.getElementById("seeMoreContainer")
+  console.log(seeMoreContainer)
+  seeMoreContainer.classList.remove("seeMoreNotHidden")
+  seeMoreContainer.classList.add("seeMoreHidden")
+  //Remove the seeMoreContainer completely so it does not replicate
+  mainBookshelfContainer.removeChild(mainBookshelfContainer.lastElementChild) 
+}
+
+//Creates the seeMore Modal
+function seeMoreData(titleId) {
+  if(mainBookshelfContainer.querySelector('#seeMoreContainer')){
+    console.log("seeMoreContainer already exists so it was removed")
+    // mainBookshelfContainer.removeChild(mainBookshelfContainer.lastElementChild)
+  } else {
+  console.log("seeMoreData function called and seeMoreContainer didn't exist")
+  console.log(titleId)
+  let seeMoreDiv = document.createElement("div");
+  seeMoreDiv.setAttribute("id", "seeMoreContainer");
+  seeMoreDiv.setAttribute("class", "seeMoreNotHidden");
+    for(const obj of allLocalStorageBooksArray) {
+      if(titleId === obj.id){
+        seeMoreDiv.innerHTML += `<div class="seeMoreData"> <button id="btnCloseSeeMore">x</button>
+          <p><strong>Title: </strong>${obj.title === "undefined" ? "N/A" : obj.title}</p>
+          <p><strong>Author: </strong>${obj.author === "undefined" ? "N/A" : obj.author}</p>
+          <p><strong>Publisher: </strong>${obj.publisher === "undefined" ? "N/A" : obj.publisher}</p>
+          <p><strong>Publishing Years: </strong>${obj.publishYear === "undefined" ? "N/A" : obj.publishYear}</p>
+          <p><strong>Ratings Average: </strong>${obj.ratingsAverage === "undefined" ? "N/A" : obj.ratingsAverage}</p>
+          <p><strong>First Sentence: </strong>${obj.firstSentence === "undefined" ? "N/A" : obj.firstSentence}</p>
+        </div> `;
+        bookshelfContainer.appendChild(seeMoreDiv);
+
+        let seeMoreContainer = document.querySelector(".seeMoreContainer");
+        console.log(seeMoreContainer)
+
+        let seeMoreCloseBtn = document.getElementById('btnCloseSeeMore')
+        console.log(seeMoreCloseBtn)
+        //button to close See More modal
+        seeMoreCloseBtn.addEventListener("click", toggleSeeMoreModalOff); 
+      }
+    }
+  }
+}
+
