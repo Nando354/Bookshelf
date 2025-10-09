@@ -34,10 +34,11 @@ let displayBookDataArray = [];
 //on load call function to populate bookshelves on load
 window.addEventListener('load', () => {
   console.log("window load called")
+  //retrieve all saved book data from Local Storage and load it into allLocalStorageBooksArray. This function also calls populateBookshelf() to display the books.
   storeLocalStorageItemsToArray();
   //See More button accessed after its creation or being fully loaded in the dom
   const seeMoreButtons = document.querySelectorAll('.seeMoreBtn');
-  //Add an eventListener to each SeeMore button in the book list pass the id to seeMoreData function which creates the modal
+  //Add an eventListener to each SeeMore button in the book list, pass the id to seeMoreData function which creates the modal
   seeMoreButtons.forEach(button => {
     button.addEventListener('click', (e) => {
       console.log("seeMoreButton Clicked")
@@ -80,6 +81,7 @@ let addBookObj = [
 ]
 
 //----Title input search Area in search modal------
+//Book Search (Typing): An event listener is attached to the titleInput for the "keyup" event. This listener calls the processChange() function, which uses a debounce utility to ensure that inputSearch() (which triggers the API call) only runs after the user pauses typing.
 
 //Debouncing so search waits to make the get call to the API and not on every keystroke
 function debounce(func, timeout = 600){
@@ -306,7 +308,7 @@ function getAllLocalStorageItems() {
   return tempObject;
 }
 
-//Local Storage - Get all the LS items individually store in an object and push to our main array allLocalStorageBooksArray
+//Local Storage - Get all the LS items, individually store in an object and push to our main array allLocalStorageBooksArray
 function storeLocalStorageItemsToArray() {
   console.log("storeLocalStorageItemsToArray is called")
   const keys = Object.keys(localStorage);
@@ -400,7 +402,7 @@ function saveRatings() {
 
 const bookshelfDivRow = document.createElement("div");
 
-//Map through the allLocalStorageBooksArray and for each book in the array pull the data and create the div that make up the bookshelf, then return that div from this listItemforContainer variable where we perform the map
+//Map through the allLocalStorageBooksArray and for each book in the array pull the data and create the div that make up the bookshelf, then return that div from this updateListItemforContainer variable where we perform the map
 function updateListItemForContainerArray(arrayToUpdate) {
     arrayToUpdate.map(bookItemFromArray => {
       console.log("listItemForContainer has the map method used")
