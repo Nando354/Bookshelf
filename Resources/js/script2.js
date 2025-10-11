@@ -139,13 +139,14 @@ function createListForSearch(doc, index){
   loadingSpinner.style.display= "none";
   const li = document.createElement('li');
   //LI text in search dropdown
-  li.textContent = `**TITLE: ${doc.title}` + "\n" + "**SUBJECT: "+`${attributeForCategory(doc)}` +"\n"+ "**AUTHOR: "+ `${doc.author_name}`;
+  li.textContent = `**TITLE: ${doc.title}` +"\n"+ "**AUTHOR: "+ `${doc.author_name}` + "\n" + "**1st Publish Year: "+`${doc.first_publish_year}`;
   //LI data attributes
   li.setAttribute("data-key", doc.key)
-  li.setAttribute("data-image", attributeForIsbn(doc))
+  li.setAttribute("data-image", attributeForCoverId(doc))
   li.setAttribute("data-title", doc.title)
   li.setAttribute("data-author", doc.author_name)
   li.setAttribute("data-category", attributeForCategory(doc))
+  li.setAttribute("data-firstPublishYear", doc.first_publish_year)
   //create attributes to store data for See More Button
   li.setAttribute("data-publisher", doc.publisher)
   li.setAttribute("data-publishYear", doc.publish_year)
@@ -163,11 +164,22 @@ function clearUnorderedList() {
 //image function to add to attribute
 function attributeForIsbn(doc) {
   console.log("attributeForIsbn called")
-  const imgIsbn = doc.isbn?.[0]
+  // const imgIsbn = doc.isbn?.[0]
+  const imgIsbn = doc.isbn ? doc.isbn[0] : "undefined";
+  console.log(imgIsbn)
   const imgUrl = `https://covers.openlibrary.org/b/isbn/${imgIsbn}`+"-M.jpg"
   //image returned if undefined should be a no image available
   let finalImgUrl = imgUrl === "https://covers.openlibrary.org/b/isbn/undefined" ? "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg" : imgUrl;
   return finalImgUrl
+}
+
+//cover id function to add to attribute, works better than isbn to retrieve cover image
+function attributeForCoverId(doc) {
+  console.log("attributeForCoverId called")
+  const coverId = doc?.cover_i;
+  const coverUrl = `https://covers.openlibrary.org/b/id/${coverId}`+"-M.jpg"
+  let finalCoverUrl = coverUrl === "https://covers.openlibrary.org/b/id/undefined-M.jpg" ? "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg" : coverUrl;
+  return finalCoverUrl  
 }
 
 function attributeForCategory(doc) {
