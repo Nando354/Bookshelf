@@ -110,7 +110,7 @@ console.log("debounce will call due to debounce()")
 //Event listener for each keyup release in title input in search modal
 titleInput.addEventListener("keyup", processChange);
 
-//Search books from API once a query is typed into title input in search modal
+//Search books from API once a query is typed into title input in search modal form
 function bookSearch(query) {
   console.log("booksearch called")
   loadingSpinner.style.display = "block";
@@ -132,8 +132,9 @@ function bookSearch(query) {
     addSearchListToDropDown();
   })
 }
-//Searching via search modal
+//Searching via drop down search modal
 //creates dom for search dropdown li for book search using data attributes to store all but rating from API to li
+//This is different from the object created to store in LS which includes the rating
 function createListForSearch(doc, index){
   console.log("createListForSearch is set off");
   loadingSpinner.style.display= "none";
@@ -145,13 +146,16 @@ function createListForSearch(doc, index){
   li.setAttribute("data-image", attributeForCoverId(doc))
   li.setAttribute("data-title", doc.title)
   li.setAttribute("data-author", doc.author_name)
-  li.setAttribute("data-category", attributeForCategory(doc))
-  li.setAttribute("data-firstPublishYear", doc.first_publish_year)
+  li.setAttribute("data-first_publish_year", doc.first_publish_year)
+  // li.setAttribute("data-category", attributeForCategory(doc))
+  
+
   //create attributes to store data for See More Button
   li.setAttribute("data-publisher", doc.publisher)
-  li.setAttribute("data-publishYear", doc.publish_year)
-  li.setAttribute("data-ratingsAverage", doc.ratings_average)
-  li.setAttribute("data-firstSentence", doc.first_sentence)
+  li.setAttribute("data-publish_year", doc.publish_year)
+  li.setAttribute("data-ratings_average", doc.ratings_average)
+  li.setAttribute("data-first_sentence", doc.first_sentence)
+  console.log(li)
   unorderedList.appendChild(li);
 }
 
@@ -216,7 +220,7 @@ function toggleSearchModalOff() {
   searchHidden.classList.add("searchHidden")
 }
 
-//Select the book from search drop down list add a classList and color and pull the book dataset key
+//Select the book title key from searchdropdowndiv list add a classList and color for selected item call retrieveBookTitleKey function
 searchDropDownDiv.addEventListener('click', (event) => {
   event.preventDefault();
   console.log("searchDropDownDiv event set off")
@@ -246,7 +250,7 @@ function retrieveBookTitleKey(selectedTitleKey){
   return finalSelectedTitleKey
 }
 
-//TESTING THIS FUNCTION --works add a prompt and prevent further adding of book
+//Checks if the selected title key is already stored in LS, if not calls createBookObject to create the object to store in LS
 function checkIfTitleKeyIsAlreadyStored(selectedTitleKey) {
   console.log(getDataLocalStorage(selectedTitleKey))
   if(getDataLocalStorage(selectedTitleKey) !== null){
@@ -271,10 +275,12 @@ function createBookObject(selectedTitleKey) {
           author: `${li.dataset.author}`,
           category: `${li.dataset.category}`,
           publisher: `${li.dataset.publisher}`,
-          publishYear: `${li.dataset.publishYear}`,
-          ratingsAverage: `${li.dataset.ratingsAverage}`,
-          firstSentence: `${li.dataset.firstSentence}`
+          publishYear: `${li.dataset.publish_year}`,
+          firstPublishYear: `${li.dataset.first_publish_year}`,
+          ratingsAverage: `${li.dataset.ratings_average}`,
+          firstSentence: `${li.dataset.first_sentence}`
        }
+       console.log(newObject)
       addBookObj.push(newObject)
     }
   })
@@ -320,7 +326,7 @@ function getAllLocalStorageItems() {
   return tempObject;
 }
 
-//Local Storage - Get all the LS items, individually store in an object and push to our main array allLocalStorageBooksArray
+//Local Storage - Get all the LS items, individually store in an object storeBooksObject and push to our main array allLocalStorageBooksArray
 function storeLocalStorageItemsToArray() {
   console.log("storeLocalStorageItemsToArray is called")
   const keys = Object.keys(localStorage);
@@ -391,7 +397,7 @@ function validateForm() {
   return true;
 }
 
-//Rating is saved to LS anb temporary addBookObj is cleared
+//Rating is saved to LS and a temporary addBookObj is cleared
 function saveRatings() {
   console.log("saveRatings is called")
   //alert if rating is not a value 1 - 5
@@ -447,17 +453,17 @@ function updateListItemForContainerArray(arrayToUpdate) {
       ratingsDiv.textContent = bookItemFromArray.ratings;
       bookshelfDivRow.appendChild(ratingsDiv);
 
-      const categoryDiv = document.createElement("div");
-      categoryDiv.setAttribute("class", "flex-row category");
-      // categoryDiv.textContent = addBookObj[`${addBookObj.length}` - 1].category
-      categoryDiv.textContent = bookItemFromArray.category;
-      bookshelfDivRow.appendChild(categoryDiv);
-
       const authorDiv = document.createElement("div");
       authorDiv.setAttribute("class", "flex-row author");
-      // authorDiv.textContent = addBookObj[`${addBookObj.length}` - 1].author
+      // categoryDiv.textContent = addBookObj[`${addBookObj.length}` - 1].category
       authorDiv.textContent = bookItemFromArray.author;
       bookshelfDivRow.appendChild(authorDiv);
+
+      const firstPublishYearDiv = document.createElement("div");
+      firstPublishYearDiv.setAttribute("class", "flex-row firstPublishYear");
+      // authorDiv.textContent = addBookObj[`${addBookObj.length}` - 1].author
+      firstPublishYearDiv.textContent = bookItemFromArray.firstPublishYear;
+      bookshelfDivRow.appendChild(firstPublishYearDiv);
 
       const buttonsDiv = document.createElement("div");
       buttonsDiv.setAttribute("class", "flex-row bookshelfButtons");
@@ -545,7 +551,7 @@ let groupingByCategory
 function createGroupByCategory() {
   groupingByCategory = allLocalStorageBooksArray.reduce((acc, curr) => {
     
-    (acc[curr.category] = acc[curr.category] || []).push(curr);
+    (acc[curr.author] = acc[curr.author] || []).push(curr);
     
     return acc;
   }, {});
@@ -709,10 +715,10 @@ let headingSortTitleIcon = document.querySelector(".titleIcon");
 console.log(headingSortTitleIcon)
 let headingSortRatingsIcon = document.querySelector(".ratingsIcon");
 console.log(headingSortRatingsIcon)
-let headingSortCategoryIcon = document.querySelector(".categoryIcon");
-console.log(headingSortCategoryIcon)
 let headingSortAuthorIcon = document.querySelector(".authorIcon");
 console.log(headingSortAuthorIcon)
+let headingSortFirstPublishYearIcon = document.querySelector(".firstPublishYearIcon");
+console.log(headingSortFirstPublishYearIcon)
 
 headingSortTitleIcon.addEventListener('click', () => {
   sortByHeadingIcon(displayBookDataArray, 'title');
@@ -723,12 +729,12 @@ headingSortRatingsIcon.addEventListener('click', () => {
   sortByHeadingIcon(displayBookDataArray, 'ratings');
 });
 
-headingSortCategoryIcon.addEventListener('click', () => {
-  sortByHeadingIcon(displayBookDataArray, 'category');
-});
-
 headingSortAuthorIcon.addEventListener('click', () => {
   sortByHeadingIcon(displayBookDataArray, 'author');
+});
+
+headingSortFirstPublishYearIcon.addEventListener('click', () => {
+  sortByHeadingIcon(displayBookDataArray, 'firstPublishYear');
 });
 
 function sortByHeadingIcon(array, property) {
@@ -770,6 +776,7 @@ function seeMoreData(titleId) {
           <p><strong>Title: </strong>${obj.title === "undefined" ? "N/A" : obj.title}</p>
           <p><strong>Author: </strong>${obj.author === "undefined" ? "N/A" : obj.author}</p>
           <p><strong>Publisher: </strong>${obj.publisher === "undefined" ? "N/A" : obj.publisher}</p>
+          <p><strong>First Publish Year: </strong>${obj.firstPublishYear === "undefined" ? "N/A" : obj.firstPublishYear}</p>
           <p><strong>Publishing Years: </strong>${obj.publishYear === "undefined" ? "N/A" : obj.publishYear}</p>
           <p><strong>Ratings Average: </strong>${obj.ratingsAverage === "undefined" ? "N/A" : obj.ratingsAverage}</p>
           <p><strong>First Sentence: </strong>${obj.firstSentence === "undefined" ? "N/A" : obj.firstSentence}</p>

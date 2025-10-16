@@ -50,11 +50,11 @@ body {
   margin-left: 12%;
 }
 
-.headingCategory {
+.headingAuthor {  
   margin-left: 6%;
 }
 
-.headingAuthor {
+.headingYear {  
   margin-left: 10.5%;
 }
 
@@ -480,12 +480,10 @@ div.seeMoreNotHidden {
     margin-left: 2%;
   }
   
-  .headingCategory {
-    margin-left: 6.9%;
+  .headingAuthor {    margin-left: 6.9%;
   }
   
-  .headingAuthor {
-    margin-left: 13%;
+  .headingYear {    margin-left: 13%;
   }
 }
 
@@ -506,12 +504,10 @@ div.seeMoreNotHidden {
     margin-left: 13.4%;
   }
   
-  .headingCategory {
-    margin-left: 12.2%;
+  .headingAuthor {    margin-left: 12.2%;
   }
   
-  .headingAuthor {
-    margin-left: 14.6%;
+  .headingYear {    margin-left: 15%;
   }
 
   .flex-table-head {
@@ -549,8 +545,7 @@ div.seeMoreNotHidden {
     margin-left: 12.1%;
   }
   
-  .headingAuthor {
-    margin-left: 13.8%;
+  .headingYear {    margin-left: 15.8%;
   }
 
   .flex-table-head {
@@ -579,12 +574,10 @@ div.seeMoreNotHidden {
     margin-left: 1%;
   }
   
-  .headingCategory {
-    margin-left: 7.8%;
+  .headingAuthor {    margin-left: 7.8%;
   }
   
-  .headingAuthor {
-    margin-left: 14.1%;
+  .headingYear {    margin-left: 14.1%;
   }
 
   .flex-table-head {
@@ -691,12 +684,10 @@ div.seeMoreNotHidden {
     margin-left: 15%;
   }
   
-  .headingCategory {
-    margin-left: 5.9%;
+  .headingAuthor {    margin-left: 5.9%;
   }
   
-  .headingAuthor {
-    margin-left: 9.3%;
+  .headingYear {    margin-left: 9.3%;
   }
 
   .flex-table-head {
@@ -828,12 +819,10 @@ div.seeMoreNotHidden {
     padding-right: 10px;
   }
   
-  .headingCategory {
-    margin-left: 7.2%;
+  .headingAuthor {    margin-left: 7.2%;
   }
   
-  .headingAuthor {
-    margin-left: 10.9%;
+  .headingYear {    margin-left: 10.9%;
   }
 
   .flex-table-head {
@@ -1007,12 +996,10 @@ div.seeMoreNotHidden {
     padding-right: 10px;
   }
   
-  .headingCategory {
-    margin-left: 5.2%;
+  .headingAuthor {    margin-left: 5.2%;
   }
   
-  .headingAuthor {
-    margin-left: 7.9%;
+  .headingYear {    margin-left: 7.9%;
   }
 
   .flex-table-head {
@@ -1190,13 +1177,11 @@ div.seeMoreNotHidden {
     font-size: 15px;
   }
   
-  .headingCategory {
-    margin-left: 2.3%;
+  .headingAuthor {    margin-left: 2.3%;
     font-size: 15px;
   }
   
-  .headingAuthor {
-    margin-left: 4.9%;
+  .headingYear {    margin-left: 4.9%;
     font-size: 15px;
   }
 
