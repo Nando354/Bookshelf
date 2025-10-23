@@ -133,19 +133,21 @@ function bookSearch(query) {
   })
 }
 //Searching via drop down search modal
-//creates dom for search dropdown li for book search using data attributes to store all but rating from API to li
-//This is different from the object created to store in LS which includes the rating
+//creates an unorderedList for search dropdown for book search by creating data attributes to store all but rating from API to li's
+//This is a list and not the object created to store in LS which includes the rating
+//This list will be used to populate the newObject via the createBookObject function
+//newObject will be pushed to addBookObj array and then eventually saved to LS
 function createListForSearch(doc, index){
   console.log("createListForSearch is set off");
   loadingSpinner.style.display= "none";
   const li = document.createElement('li');
   //LI text in search dropdown
-  li.textContent = `**TITLE: ${doc.title}` +"\n"+ "**AUTHOR: "+ `${doc.author_name}` + "\n" + "**1st Publish Year: "+`${doc.first_publish_year}`;
+  li.textContent = `**TITLE: ${doc.title}` +"\n"+ "**AUTHOR: "+ `${attributeForAuthorName(doc)}` + "\n" + "**1st Publish Year: "+`${doc.first_publish_year}`;
   //LI data attributes
   li.setAttribute("data-key", doc.key)
   li.setAttribute("data-image", attributeForCoverId(doc))
   li.setAttribute("data-title", doc.title)
-  li.setAttribute("data-author", doc.author_name)
+  li.setAttribute("data-author", attributeForAuthorName(doc))
   li.setAttribute("data-first_publish_year", doc.first_publish_year)
   // li.setAttribute("data-category", attributeForCategory(doc))
   
@@ -155,6 +157,8 @@ function createListForSearch(doc, index){
   li.setAttribute("data-publish_year", doc.publish_year)
   li.setAttribute("data-ratings_average", doc.ratings_average)
   li.setAttribute("data-first_sentence", doc.first_sentence)
+  li.setAttribute("data-edition_count", doc.edition_count)
+  
   console.log(li)
   unorderedList.appendChild(li);
 }
@@ -165,16 +169,39 @@ function clearUnorderedList() {
   unorderedList.innerHTML = ' ';
 }
 
+//No longer in use but kept for reference
 //image function to add to attribute
-function attributeForIsbn(doc) {
-  console.log("attributeForIsbn called")
-  // const imgIsbn = doc.isbn?.[0]
-  const imgIsbn = doc.isbn ? doc.isbn[0] : "undefined";
-  console.log(imgIsbn)
-  const imgUrl = `https://covers.openlibrary.org/b/isbn/${imgIsbn}`+"-M.jpg"
-  //image returned if undefined should be a no image available
-  let finalImgUrl = imgUrl === "https://covers.openlibrary.org/b/isbn/undefined" ? "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg" : imgUrl;
-  return finalImgUrl
+// function attributeForIsbn(doc) {
+//   console.log("attributeForIsbn called")
+//   // const imgIsbn = doc.isbn?.[0]
+//   const imgIsbn = doc.isbn ? doc.isbn[0] : "undefined";
+//   console.log(imgIsbn)
+//   const imgUrl = `https://covers.openlibrary.org/b/isbn/${imgIsbn}`+"-M.jpg"
+//   //image returned if undefined should be a no image available
+//   let finalImgUrl = imgUrl === "https://covers.openlibrary.org/b/isbn/undefined" ? "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg" : imgUrl;
+//   return finalImgUrl
+// }
+
+function attributeForAuthorName(doc) {
+  console.log("attributeForAuthorName called");  
+  // 1. Get the entire author_name array (if it exists)
+  const authorArray = doc?.author_name;  
+  // Handle case where author data is missing
+  if (!authorArray || authorArray.length === 0) {
+    return "N/A";
+  }  
+  // 2. Format and Join the names
+  // Use map() to ensure each individual name is trimmed and clean,
+  // then join the entire array into a single string separated by ", ".
+  const formattedNames = authorArray
+    .map(name => {
+      // Clean up internal commas/spaces within a single name string
+      // e.g., "Quincy, John" -> "Quincy, John"
+      return name.trim().replace(/\s*,\s*/g, ',').split(',').map(n => n.trim()).join(', ');
+    })
+    .join('; '); // Use a semicolon to clearly separate different authors  
+  console.log(formattedNames);
+  return formattedNames;
 }
 
 //cover id function to add to attribute, works better than isbn to retrieve cover image
@@ -186,16 +213,17 @@ function attributeForCoverId(doc) {
   return finalCoverUrl  
 }
 
-function attributeForCategory(doc) {
-  console.log("attributeForCategory called")
-  const categorySubjectFacetArray = doc?.subject_facet;
-  const categorySubjectArray = doc?.subject;
-  const finalCategory = categorySubjectArray?.slice(0, 1).join(", ");
-  let finalCategoryText = finalCategory === undefined ? "N/A" : finalCategory;
-  return finalCategoryText
-}
+//No longer in use but kept for reference
+// function attributeForCategory(doc) {
+//   console.log("attributeForCategory called")
+//   const categorySubjectFacetArray = doc?.subject_facet;
+//   const categorySubjectArray = doc?.subject;
+//   const finalCategory = categorySubjectArray?.slice(0, 1).join(", ");
+//   let finalCategoryText = finalCategory === undefined ? "N/A" : finalCategory;
+//   return finalCategoryText
+// }
 
-//Create the UL from the array of books that match the search and attaches to search div
+//Create the UL from the add book search LI along with custom data attributes that match the search it attaches to searchDropDownDiv and toggles the search modal on
 function addSearchListToDropDown(){
   //create elements for ul
   console.log("addSearchListToDropDown is set off")
@@ -220,18 +248,19 @@ function toggleSearchModalOff() {
   searchHidden.classList.add("searchHidden")
 }
 
-//Select the book title key from searchdropdowndiv list add a classList and color for selected item call retrieveBookTitleKey function
+//Select the book title key from searchdropdowndiv list add a classList and color for selected item 
+//Calls retrieveBookTitleKey function which calls checkIfTitleKeyIsAlreadyStored function which calls createBookObject function
 searchDropDownDiv.addEventListener('click', (event) => {
   event.preventDefault();
   console.log("searchDropDownDiv event set off")
   const target = event.target;
   if(target.tagName = 'li') {
     target.classList.add('selected');
+    //Selected title key from the data attribute of the target li clicked
     let selectedTitleKey = target.dataset.key
     // console.log(selectedTitleKey)
     retrieveBookTitleKey(selectedTitleKey)
     //close the search drop down modal after selecting book title
-    // toggleSearchModal();
     toggleSearchModalOff();
     target.classList.remove('selected')
     //disable rating input field while looking for book on dropdown
@@ -241,7 +270,7 @@ searchDropDownDiv.addEventListener('click', (event) => {
   }
 })
 
-//Called when book is selected from search dropdown, uses the title key to createBookObject
+//Called when book is selected from search dropdown, uses the title key to checkIfTitleKeyIsAlreadyStored
 function retrieveBookTitleKey(selectedTitleKey){
   console.log(`${selectedTitleKey} has been retrieved via retrieveBookTitleKey function`)
   checkIfTitleKeyIsAlreadyStored(selectedTitleKey)
@@ -262,11 +291,13 @@ function checkIfTitleKeyIsAlreadyStored(selectedTitleKey) {
   }
 }
 
-//Creates an array of addBookObj from newObject made up of selected book and all the li datasets
+//Adds to addBookObj from newObject made up of the selected book and all the relevant li datasets created in createListForSearch function
 function createBookObject(selectedTitleKey) {
   console.log("createBookObject was called")
   const targetId = selectedTitleKey;
+  //loop through the li's in searchDropDownDiv to match the selected title key then creates the newObject to push to addBookObj array
   searchDropDownDiv.querySelectorAll('li').forEach(li => {   
+    console.log(li)
     if (li.dataset.key === targetId) {
       const newObject = {
           id: `${li.dataset.key}`,
@@ -278,9 +309,11 @@ function createBookObject(selectedTitleKey) {
           publishYear: `${li.dataset.publish_year}`,
           firstPublishYear: `${li.dataset.first_publish_year}`,
           ratingsAverage: `${li.dataset.ratings_average}`,
-          firstSentence: `${li.dataset.first_sentence}`
+          firstSentence: `${li.dataset.first_sentence}`,
+          editionCount: `${li.dataset.edition_count}`,
        }
        console.log(newObject)
+      //newObject will be used to push to LS
       addBookObj.push(newObject)
     }
   })
@@ -311,22 +344,23 @@ function removeItemLocalStorage(key) {
   refreshPage();
 }
 
-//Local Storage - Get all the LS items and populate the bookshelf, function is called on original page load
-function getAllLocalStorageItems() {
-  console.log("getAllLocalStorageItems is called")
-  const keys = Object.keys(localStorage);
-  const tempObject = {};
-  //Get each key and value from LS and create a book shelf row from the value
-  keys.forEach(key => {
-    const value = localStorage.getItem(key);
-    tempObject[key] = JSON.parse(value);
-    // createNewbookshelfRow(tempObject[key]);
-  });
-  console.log(tempObject)
-  return tempObject;
-}
+//No longer in use but kept for reference
+//Local Storage - Get all the LS items
+// function getAllLocalStorageItems() {
+//   console.log("getAllLocalStorageItems is called")
+//   const keys = Object.keys(localStorage);
+//   const tempObject = {};
+//   //Get each key and value from LS
+//   keys.forEach(key => {
+//     const value = localStorage.getItem(key);
+//     tempObject[key] = JSON.parse(value);
+//   });
+//   console.log(tempObject)
+//   return tempObject;
+// }
 
-//Local Storage - Get all the LS items, individually store in an object storeBooksObject and push to our main array allLocalStorageBooksArray
+//Called on window load to get all LS items and store them in an array, calls populateBookshelf to display the books
+//Local Storage - Get all the LS items, individually store in an object storeBooksObject and push to our main array allLocalStorageBooksArray which populates the bookshelf
 function storeLocalStorageItemsToArray() {
   console.log("storeLocalStorageItemsToArray is called")
   const keys = Object.keys(localStorage);
@@ -370,11 +404,12 @@ function clearBookshelf() {
   console.log(mainBookshelfContainer)
 }
 
-// const allLsObjects = getAllLocalStorageItems();
+
 const allLSObjects = allLocalStorageBooksArray
 console.log(allLSObjects)
 
-//Add button in search modal to save selected book and ratings into LS
+//Add button in search modal to save selected book into newBookObj pushed to addBookObj, ratings directly saved into addBookObj which is then saved to LS
+//also calls functions to validate the form to make sure both fields are filled in
 addBtn.addEventListener('click', (e)=> {
   e.preventDefault();
   console.log("addBtn clicked")
@@ -496,7 +531,7 @@ function updateListItemForContainerArray(arrayToUpdate) {
 }
 
 function checkChildElementOfContainer() {
-  //Creates it for Each Key from getAllLocalStorageItems function
+  //Creates it for Each Key from LS
   //first time it has no childElement
   //second key there will be a childElement and will remove the childElement so it will not work
   const bookshelfContainer = document.getElementById("bookshelfContainer");
@@ -531,17 +566,18 @@ function checkChildElementOfContainer() {
 
 
 //-----Categories Section------
+//No longer in use but kept for reference
 //NEW NOTE: Similar to getAllDataLocalStorageItems so just use one instead.
 //Gets all data in local storage put it in allLSObjects variable to use for Browse by Categories
-function getAllDataLocalStorage() {
-  console.log("getAllDataLocalStorage is called")
-  const keys = Object.keys(localStorage);
-  const lsObjects = {};
-  keys.forEach(key => {
-    const value = localStorage.getItem(key);
-    lsObjects[key] = JSON.parse(value);
-  });
-}
+// function getAllDataLocalStorage() {
+//   console.log("getAllDataLocalStorage is called")
+//   const keys = Object.keys(localStorage);
+//   const lsObjects = {};
+//   keys.forEach(key => {
+//     const value = localStorage.getItem(key);
+//     lsObjects[key] = JSON.parse(value);
+//   });
+// }
 
 // categoryButton.addEventListener('click', getAllCategories)
 categoryButton.addEventListener('click', checkIfCategoryDropDownExist)
@@ -775,11 +811,10 @@ function seeMoreData(titleId) {
         seeMoreDiv.innerHTML += `<div class="seeMoreData"> <button id="btnCloseSeeMore">x</button>
           <p><strong>Title: </strong>${obj.title === "undefined" ? "N/A" : obj.title}</p>
           <p><strong>Author: </strong>${obj.author === "undefined" ? "N/A" : obj.author}</p>
-          <p><strong>Publisher: </strong>${obj.publisher === "undefined" ? "N/A" : obj.publisher}</p>
           <p><strong>First Publish Year: </strong>${obj.firstPublishYear === "undefined" ? "N/A" : obj.firstPublishYear}</p>
-          <p><strong>Publishing Years: </strong>${obj.publishYear === "undefined" ? "N/A" : obj.publishYear}</p>
-          <p><strong>Ratings Average: </strong>${obj.ratingsAverage === "undefined" ? "N/A" : obj.ratingsAverage}</p>
-          <p><strong>First Sentence: </strong>${obj.firstSentence === "undefined" ? "N/A" : obj.firstSentence}</p>
+          <p><strong>Open library Key: </strong>${obj.id === "undefined" ? "N/A" : obj.id}</p>
+          <p><strong>Book Cover ID: </strong>${obj.image === "undefined" ? "N/A" : obj.image}</p>
+          <p><strong>Edition Count: </strong>${obj.editionCount === "undefined" ? "N/A" : obj.editionCount}</p>
         </div> `;
         bookshelfContainer.appendChild(seeMoreDiv);
 

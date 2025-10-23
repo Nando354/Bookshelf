@@ -47,15 +47,15 @@ body {
 }
 
 .headingRating {
-  margin-left: 12%;
+  margin-left: 16.4%;
 }
 
 .headingAuthor {  
-  margin-left: 6%;
+  margin-left: 13.8%;
 }
 
 .headingYear {  
-  margin-left: 10.5%;
+  margin-left: 16%;
 }
 
 #bookshelfHeaderContainer {
@@ -473,17 +473,18 @@ div.seeMoreNotHidden {
     width: 200px;
     flex-direction: row;
     justify-content: left;
-    padding-right: 275px;
+    margin-left: 6.5%;
+    padding-right: 135px;
   }
   
   .headingRating {
-    margin-left: 2%;
+    margin-left: 2.8%;
   }
   
-  .headingAuthor {    margin-left: 6.9%;
+  .headingAuthor {    margin-left: 7.6%;
   }
   
-  .headingYear {    margin-left: 13%;
+  .headingYear {    margin-left: 12%;
   }
 }
 
@@ -492,22 +493,25 @@ div.seeMoreNotHidden {
     padding-right: 8.1%;
   }
   
-  .headingTitle { 
+  .headingTitle {
     display: flex;
-    width: 100px;
+    width: 200px;
     flex-direction: row;
     justify-content: left;
-    padding-right: 275px; 
+    margin-left: 11.5%;
+    padding-right: 215px;
   }
   
-  .headingRating {  
-    margin-left: 13.4%;
+  .headingRating {
+    margin-left: 2.8%;
   }
   
-  .headingAuthor {    margin-left: 12.2%;
+  .headingAuthor {    
+    margin-left: 13.7%;
   }
   
-  .headingYear {    margin-left: 15%;
+  .headingYear {    
+    margin-left: 16%;
   }
 
   .flex-table-head {
@@ -529,23 +533,26 @@ div.seeMoreNotHidden {
     padding-right: 6.7%;
   }
   
-  .headingTitle { 
+  .headingTitle {
     display: flex;
-    width: 100px;
+    width: 200px;
+    height: 20px;
     flex-direction: row;
     justify-content: left;
-    padding-right: 275px;  
+    margin-left: 10.5%;
+    padding-right: 35px;
   }
   
   .headingRating {  
-    margin-left: 9.7%;
+    margin-left: 12%;
   }
   
-  .headingCategory { 
-    margin-left: 12.1%;
+  .headingAuthor { 
+    margin-left: 13.4%;
   }
   
-  .headingYear {    margin-left: 15.8%;
+  .headingYear {    
+    margin-left: 13.2%;
   }
 
   .flex-table-head {
@@ -567,17 +574,24 @@ div.seeMoreNotHidden {
   }
   
   .headingTitle {
-    padding-right: 90px;  
+    display: flex;
+    width: 200px;
+    height: 20px;
+    flex-direction: row;
+    justify-content: left;
+    margin-left: 9.7%;
   }
   
   .headingRating {
-    margin-left: 1%;
+    margin-left: 2.3%;
   }
   
-  .headingAuthor {    margin-left: 7.8%;
+  .headingAuthor {    
+    margin-left: 9.4%;
   }
   
-  .headingYear {    margin-left: 14.1%;
+  .headingYear {    
+    margin-left: 15%;
   }
 
   .flex-table-head {
@@ -675,19 +689,26 @@ div.seeMoreNotHidden {
   .headingTitle {
     display: flex;
     width: 10%;
+    height: 20px;
     flex-direction: row;
     justify-content: left;
     padding-right: 10%;
+    margin-left: 10.5%;
   }
   
   .headingRating {
-    margin-left: 15%;
+    margin-left: 6%;
   }
   
-  .headingAuthor {    margin-left: 5.9%;
+  .headingAuthor {    
+    margin-left: 9.4%;
   }
   
-  .headingYear {    margin-left: 9.3%;
+  .headingYear {    
+    margin-left: 9.2%;
+    flex-direction: row;
+    justify-content: center;
+    width: 10%;
   }
 
   .flex-table-head {
@@ -780,11 +801,26 @@ div.seeMoreNotHidden {
   .addBookModalForm {
     position: fixed;
     top: 0%;
-    left: 10%;
+    left: 2%;
+    transform: translate(-70, -30%);
+    width: 80%;
+  }
+
+  .innerModalSection {
+    background-color: rgb(235, 245, 249);
+    width: 280px;
+    height: 280px;
+    padding: 10px;
+  }
+
+  .addBookModalForm {
+    position: fixed;
+    top: 0%;
+    left: 5%;
     transform: translate(-70, -30%);
   }
 
-  .headerDiv{
+  .headerDiv {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -809,31 +845,40 @@ div.seeMoreNotHidden {
   .headingTitle {
     display: flex;
     width: 10%;
+    height: 20px;
+    margin-left: 12.4%;
     flex-direction: row;
-    justify-content: center;
-    padding-right: 10%; 
+    justify-content: left;
+    padding-right: 6%;
   }
   
   .headingRating {
-    margin-left: 6%;
+    margin-left: 5%;
     padding-right: 10px;
   }
   
-  .headingAuthor {    margin-left: 7.2%;
+  .headingAuthor {    
+    margin-left: 7.5%;
   }
-  
-  .headingYear {    margin-left: 10.9%;
+
+  .headingYear {    
+    margin-left: 13%;
+    font-size: 15px;
+    width: 15%;
+    flex-direction: row;
+    justify-content: center;
+    
   }
 
   .flex-table-head {
     display: flex;
     width: 120%;
-    gap: 0px;; 
+    gap: 0; 
   }
 
   .flex-table {
     display: flex;
-    width: 120%;
+    width: 110%;
     gap: 0;
   }
 
@@ -892,7 +937,7 @@ div.seeMoreNotHidden {
     font-size: 14px;
   }
 
-  .bookshelfButtons {
+   .bookshelfButtons {
     display: flex;
     flex-direction: row;
     align-items: end;
@@ -920,6 +965,7 @@ div.seeMoreNotHidden {
     padding: 0px 6px 0px 6px;
     border-radius: 10%;
     margin-left: 5px;
+    
   }
 
   #seeMoreContainer {
@@ -986,20 +1032,29 @@ div.seeMoreNotHidden {
   .headingTitle {
     display: flex;
     width: 10%;
+    height: 20px;
+    margin-left: 9.2%;
     flex-direction: row;
     justify-content: left;
-    padding-right: 10%;
+    padding-right: 7%;
   }
   
   .headingRating {
-    margin-left: 6%;
+    margin-left: 5%;
     padding-right: 10px;
   }
   
-  .headingAuthor {    margin-left: 5.2%;
+  .headingAuthor {    
+    margin-left: 7.5%;
   }
-  
-  .headingYear {    margin-left: 7.9%;
+
+  .headingYear {    
+    margin-left: 13%;
+    font-size: 15px;
+    width: 15%;
+    flex-direction: row;
+    justify-content: center;
+    
   }
 
   .flex-table-head {
@@ -1161,28 +1216,35 @@ div.seeMoreNotHidden {
     z-index: 0;
   }
 
+  .flex-table-head {
+    width: 120%;
+  }
+
   .headingTitle {
     display: flex;
-    width: 10%;
-    flex-direction: row;
-    justify-content: center;
-    padding-right: 10%;
-    padding-left: 3px;
+    width: 60px;
+    height: 20px;
+    margin-left: 3%;
     font-size: 15px;
   }
   
   .headingRating {
-    margin-left: 4%;
+    margin-left: 5%;
     padding-right: 10px;
     font-size: 15px;
   }
   
-  .headingAuthor {    margin-left: 2.3%;
+  .headingAuthor {    
+    margin-left: 7.3%;
     font-size: 15px;
   }
   
-  .headingYear {    margin-left: 4.9%;
+  .headingYear {    
+    margin-left: 11.9%;
     font-size: 15px;
+    width: 15%;
+    flex-direction: row;
+    justify-content: center;
   }
 
   .flex-table-head {
