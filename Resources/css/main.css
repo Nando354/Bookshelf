@@ -552,7 +552,7 @@ div.seeMoreNotHidden {
   }
   
   .headingYear {    
-    margin-left: 13.2%;
+    margin-left: 13.1%;
   }
 
   .flex-table-head {
@@ -789,8 +789,6 @@ div.seeMoreNotHidden {
     max-height: 400px;
   }
 }
-
-
 
 /*Good*/
 @media (min-width: 425px) and (max-width: 767px) { 

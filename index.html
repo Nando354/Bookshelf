@@ -10,7 +10,8 @@
   <header>
     <div class="blueTopSection"></div>
     <div class="headerDiv">
-      <h1 class="myBookShelf">My Bookshelf</h1>  
+      <h1 class="myBookShelf">My Bookshelf</h1>
+      <!-- Add Book Button and Category Dropdown -->
       <div class="categoryAndButtonDiv">
         <div id="categoryInputAndListDiv">
           <button required type="select" class="form-control" id="category-button">Author Category</button>
@@ -19,6 +20,7 @@
         <button id="addBookButtonModal">Add Book</button>
       </div> 
   </header>
+  <!-- Book Shelf Headers -->
   <div id="bookshelfHeaderContainer">
     <div class="flex-table-head header">
       <div class="flex-row headingTitle">Title
@@ -34,11 +36,12 @@
         <a href="#" class="sort-by firstPublishYearIcon"></a>
       </div>
       <div class="flex-row headingBlank">
-        <!-- space holder -->
       </div>
     </div>
+    <!-- Book Shelf Container and Rows -->
     <div id="bookshelfContainer"></div>
   </div>
+  <!-- Book Search Modal -->
   <form class="addBookModalForm hidden" id="modal" autocomplete="off">
     <button id="btnCloseModal">x</button>
     <h2>Add to your bookshelf</h2>
@@ -48,8 +51,8 @@
       <div class="loadSpinner">
         <div id="loadingSpinner" style="display: none;"></div>
       </div>
-      <!-- <button class="modalSearchBtn">Search</button> -->
       <div class="searchHidden">
+        <!-- Book Search results UL and LI will be appended here -->
         <div id="searchResults">
         </div>
       </div>
